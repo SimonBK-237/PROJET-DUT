@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Inscription - CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00602a",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#3f493f",
+                        "outline-variant": "#becabc",
+                        "background": "#f8f9fb",
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #00602a 0%, #1a7a3c 100%); }
+        .academic-gradient { background: linear-gradient(135deg, #59d655 0%, #1a7a3c 100%); }
+        .tonal-elevation { box-shadow: 0px 12px 32px rgba(25, 28, 30, 0.08); }
+        .strength-bar { transition: width 0.3s ease-in-out, background-color 0.3s shadow; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden bg-[#f8f9fb]">
+
+    <div class="fixed top-5 right-5 z-50">
+        <button id="langToggle" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-base">language</span>
+            <span id="langLabel">FR</span>
+        </button>
+    </div>
+
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute -top-24 -left-24 w-96 h-96 hero-gradient opacity-10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] hero-gradient opacity-10 rounded-full blur-3xl"></div>
+    </div>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="w-full max-w-lg">
+            <div class="bg-white rounded-2xl p-10 tonal-elevation border border-gray-100 flex flex-col gap-8">
+                
+                <div class="flex flex-col items-center text-center">
+                    <div class="flex items-center gap-2 mb-6 fade-up">
+                        <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">school</span>
+                        <span class="font-headline font-extrabold text-2xl tracking-tight text-primary"><span class="text-on-surface">Camuno</span>Learn</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h1 class="font-headline text-2xl font-bold text-on-surface tracking-tight text-gray-900 fade-up" data-i18n="signup_title">Créer un compte étudiant</h1>
+                        <p class="font-body text-gray-500 text-sm fade-up" data-i18n="signup_subtitle">Accédez aux ressources académiques de Douala</p>
+                    </div>
+                </div>
+
+                <form class="space-y-5 fade-up" id="registrationForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="firstname_label">Prénom</label>
+                            <input class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-primary/20 transition-all" 
+                                   type="text" data-i18n-placeholder="firstname_placeholder" placeholder="Jean" required/>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="lastname_label">Nom</label>
+                            <input class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-primary/20 transition-all" 
+                                   type="text" data-i18n-placeholder="lastname_placeholder" placeholder="Ebanda" required/>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="email_label">Email académique</label>
+                        <input class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-primary/20 transition-all" 
+                               type="email" data-i18n-placeholder="email_placeholder" placeholder="nom@etudiant.cm" required/>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="password_label">Mot de passe</label>
+                        <div class="relative flex items-center bg-gray-50 rounded-xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                            <input id="passwordInput" class="bg-transparent border-none focus:ring-0 w-full font-body text-sm text-on-surface" 
+                                   type="password" data-i18n-placeholder="password_placeholder" placeholder="••••••••" required/>
+                            <button type="button" id="togglePassword" class="flex items-center justify-center text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                                <span class="material-symbols-outlined text-[1.2rem]" id="passwordIcon">visibility</span>
+                            </button>
+                        </div>
+                        
+                        <div class="px-1 pt-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span id="strengthText" class="text-[0.65rem] font-bold uppercase tracking-wider text-gray-400" data-i18n="strength_short">Force : trop court</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                <div id="strengthBar" class="strength-bar h-full w-0 bg-gray-300"></div>
+                            </div>
+                            <p class="text-[0.65rem] text-gray-400 mt-1" data-i18n="password_hint">Utilisez 8 caractères ou plus (lettres, chiffres & symboles).</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 px-1">
+                        <input type="checkbox" class="mt-1 rounded text-primary focus:ring-primary h-4 w-4 border-gray-300" required>
+                        <span class="text-xs text-gray-500 leading-relaxed" data-i18n="terms_text">
+                            J'accepte de respecter la charte d'Utilisateur et les conditions d'utilisation.
+                        </span>
+                    </div>
+
+                    <button class="w-full academic-gradient text-white py-4 rounded-xl font-headline font-bold text-sm tracking-wide shadow-lg shadow-primary/20 hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit" data-i18n="signup_button">
+                        S'inscrire gratuitement
+                        <span class="material-symbols-outlined text-[1.2rem]">arrow_forward</span>
+                    </button>
+                </form>
+
+                <div class="pt-4 flex flex-col gap-6 text-center fade-up">
+                    <div class="h-[1px] w-full bg-gray-100"></div>
+                    <p class="font-body text-sm text-gray-500">
+                        <span data-i18n="login_prompt">Vous avez déjà un compte ?</span>
+                        <a class="text-primary font-bold hover:underline ml-1" href="indexconnexion.html" data-i18n="login_link">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-8 bg-white border-t border-gray-100 mt-auto">
+        <div class="max-w-7xl mx-auto px-8 flex justify-between items-center text-gray-400 text-xs font-medium">
+            <p data-i18n="footer_copyright">© 2026 CamunoLearn</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-primary" data-i18n="footer_support">Support</a>
+                <a href="#" class="hover:text-primary" data-i18n="footer_privacy">Confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            fr: {
+                signup_title: "Créer un compte étudiant",
+                signup_subtitle: "Accédez aux ressources académiques de Douala",
+                firstname_label: "Prénom",
+                firstname_placeholder: "Jean",
+                lastname_label: "Nom",
+                lastname_placeholder: "Ebanda",
+                email_label: "Email académique",
+                email_placeholder: "nom@etudiant.cm",
+                password_label: "Mot de passe",
+                password_placeholder: "••••••••",
+                strength_short: "Force : trop court",
+                strength_empty: "Force : Vide",
+                strength_weak: "Force : Faible",
+                strength_medium: "Force : Moyenne",
+                strength_strong: "Force : Excellente",
+                password_hint: "Utilisez 8 caractères ou plus (lettres, chiffres & symboles).",
+                terms_text: "J'accepte de respecter la charte d'Utilisateur et les conditions d'utilisation.",
+                signup_button: "S'inscrire gratuitement",
+                login_prompt: "Vous avez déjà un compte ?",
+                login_link: "Se connecter",
+                footer_copyright: "© 2026 CamunoLearn — Douala",
+                footer_support: "Support",
+                footer_privacy: "Confidentialité"
+            },
+            en: {
+                signup_title: "Create a student account",
+                signup_subtitle: "Access academic resources from Douala",
+                firstname_label: "First name",
+                firstname_placeholder: "John",
+                lastname_label: "Last name",
+                lastname_placeholder: "Doe",
+                email_label: "Academic email",
+                email_placeholder: "name@student.cm",
+                password_label: "Password",
+                password_placeholder: "••••••••",
+                strength_short: "Strength: too short",
+                strength_empty: "Strength: Empty",
+                strength_weak: "Strength: Weak",
+                strength_medium: "Strength: Medium",
+                strength_strong: "Strength: Excellent",
+                password_hint: "Use 8+ characters (letters, numbers & symbols).",
+                terms_text: "I agree to abide by the User Charter and Terms of Use.",
+                signup_button: "Sign up for free",
+                login_prompt: "Already have an account?",
+                login_link: "Log in",
+                footer_copyright: "© 2026 CamunoLearn — Douala",
+                footer_support: "Support",
+                footer_privacy: "Privacy"
+            }
+        };
+
+        let currentLang = 'fr';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+            document.getElementById('langLabel').innerText = lang.toUpperCase();
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+        
+            const strengthTextEl = document.getElementById('strengthText');
+            if (strengthTextEl && !strengthTextEl.hasAttribute('data-i18n-fixed')) {
+                
+                refreshStrengthMessage();
+            } else {
+                refreshStrengthMessage();
+            }
+        }
+
+        function refreshStrengthMessage() {
+            const password = passwordInput.value;
+            if (!password) {
+                setStrengthMessage('strength_empty');
+                return;
+            }
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            if (password.length === 0) {
+                setStrengthMessage('strength_empty');
+            } else if (strength === 0) {
+                setStrengthMessage('strength_short');
+            } else if (strength === 1) {
+                setStrengthMessage('strength_weak');
+            } else if (strength === 2) {
+                setStrengthMessage('strength_medium');
+            } else if (strength >= 3) {
+                setStrengthMessage('strength_strong');
+            }
+        }
+
+        function setStrengthMessage(key) {
+            const strengthTextEl = document.getElementById('strengthText');
+            if (strengthTextEl && translations[currentLang][key]) {
+                strengthTextEl.textContent = translations[currentLang][key];
+            }
+        }
+
+        const toggleBtn = document.getElementById('langToggle');
+        toggleBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'fr' ? 'en' : 'fr';
+            updateLanguage(newLang);
+        });
+
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#passwordInput');
+        const passwordIcon = document.querySelector('#passwordIcon');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            passwordIcon.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+
+        const strengthBar = document.querySelector('#strengthBar');
+        const strengthText = document.querySelector('#strengthText');
+
+        passwordInput.addEventListener('input', () => {
+            const val = passwordInput.value;
+            let strength = 0;
+            
+            if (val.length >= 8) strength++;
+            if (val.match(/[a-z]/) && val.match(/[A-Z]/)) strength++;
+            if (val.match(/[0-9]/)) strength++;
+            if (val.match(/[^a-zA-Z0-9]/)) strength++;
+
+            switch(strength) {
+                case 0:
+                    strengthBar.style.width = '10%';
+                    strengthBar.className = 'strength-bar h-full bg-red-400';
+                    if (val.length === 0) {
+                        setStrengthMessage('strength_empty');
+                        strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-gray-400";
+                    } else {
+                        setStrengthMessage('strength_short');
+                        strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-red-400";
+                    }
+                    break;
+                case 1:
+                    strengthBar.style.width = '30%';
+                    strengthBar.className = 'strength-bar h-full bg-orange-400';
+                    setStrengthMessage('strength_weak');
+                    strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-orange-400";
+                    break;
+                case 2:
+                    strengthBar.style.width = '60%';
+                    strengthBar.className = 'strength-bar h-full bg-yellow-400';
+                    setStrengthMessage('strength_medium');
+                    strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-yellow-500";
+                    break;
+                case 3:
+                case 4:
+                    strengthBar.style.width = '100%';
+                    strengthBar.className = 'strength-bar h-full bg-green-500';
+                    setStrengthMessage('strength_strong');
+                    strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-green-600";
+                    break;
+            }
+
+            if (val.length === 0) {
+                strengthBar.style.width = '0';
+                setStrengthMessage('strength_empty');
+                strengthText.className = "text-[0.65rem] font-bold uppercase tracking-wider text-gray-400";
+            }
+        });
+
+        const registrationForm = document.getElementById('registrationForm');
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = registrationForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="animate-spin material-symbols-outlined">autorenew</span> <span data-i18n="signup_loading">Inscription...</span>';
+            submitBtn.style.opacity = "0.7";
+
+            setTimeout(() => {
+                window.location.href = 'indexSélectionRole.html';
+            }, 1500);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-up').forEach((el, i) => {
+                setTimeout(() => el.classList.add('show'), 150 + i * 160);
+            });
+            
+            updateLanguage('fr');
+            translations.fr.signup_loading = "Inscription...";
+            translations.en.signup_loading = "Signing up...";
+        });
+    </script>
+</body>
+</html>

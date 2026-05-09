@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard Étudiant | CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00602a",
+                        "primary-container": "#1a7a3c",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#3f493f",
+                        "background": "#f8f9fb",
+                        "surface": "#ffffff",
+                        "tertiary": "#a90111"
+                    },
+                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"] }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .dropdown-active { display: block !important; animation: fadeIn 0.2s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-down {
+            animation: fadeDown 0.4s ease-out forwards;
+        }
+        .search-transition {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body">
+    <aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 z-50 p-6">
+        <div class="flex items-center gap-2 mb-10">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">school</span>
+            <span class="text-xl font-black tracking-tight text-primary font-headline"><span class="text-on-surface">Camuno</span>Learn</span>
+        </div>
+
+        <nav class="flex flex-col gap-2 flex-grow">
+            <button data-nav="overview" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Vue d'ensemble</span>
+            </button>
+            
+            <button data-nav="community" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
+                <span class="material-symbols-outlined">groups</span>
+                <span>Communautés</span>
+            </button>
+
+            <button data-nav="assignments" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
+                <span class="material-symbols-outlined">assignment</span>
+                <span>Mes Devoirs</span>
+            </button>
+            
+            <button data-nav="courses" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
+                <span class="material-symbols-outlined">auto_stories</span>
+                <span>Mes Cours</span>
+            </button>
+
+            <button data-nav="profile" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all mt-4">
+                <span class="material-symbols-outlined">person</span>
+                <span>Mon Profil</span>
+            </button>
+        </nav>
+
+        <div class="border-t border-gray-100 pt-6">
+            <button onclick="openLogoutModal()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-tertiary font-bold hover:bg-red-50 transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <header class="fixed top-0 right-0 left-0 md:left-64 h-20 bg-white/80 backdrop-blur-md border-b border-gray-50 z-40 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-4 flex-1">
+            <h2 class="font-headline font-bold text-lg md:text-xl text-slate-700" id="page-title">Tableau de bord</h2>
+            <div id="searchContainer" class="hidden md:flex ml-auto max-w-md w-full transition-all duration-300">
+                <div class="relative w-full">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <input type="text" id="communitySearchInput" placeholder="Rechercher une communauté (nom, description...)" 
+                           class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <div class="relative" id="notif-wrapper">
+                <button onclick="toggleNotifMenu()" class="relative p-2 text-slate-400 hover:bg-gray-100 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <div id="notifMenu" class="hidden absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+                    <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h4 class="font-headline font-bold text-sm">Notifications</h4>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase cursor-pointer hover:text-primary">Tout marquer lu</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center py-10 px-6 text-center gap-3">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-gray-400 text-2xl">notifications_off</span>
+                        </div>
+                        <p class="font-bold text-sm text-slate-600">Aucune notification</p>
+                        <p class="text-xs text-gray-400 leading-relaxed">Vous êtes à jour ! Les nouvelles notifications apparaîtront ici.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative" id="user-avatar-wrapper">
+                <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full ring-2 ring-primary p-0.5 overflow-hidden focus:outline-none">
+                    <img src="https://ui-avatars.com/api/?name=Marcel+Etudiant&background=00602a&color=fff" class="w-full h-full rounded-full object-cover" alt="Profile">
+                </button>
+                <div id="userMenu" class="hidden absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                    <button onclick="navigateTo('profile'); closeUserMenu();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50 text-left">
+                        <span class="material-symbols-outlined text-lg">person</span> Mon Profil
+                    </button>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50">
+                        <span class="material-symbols-outlined text-lg">settings</span> Paramètres
+                    </a>
+                    <div class="border-t border-gray-50 my-2"></div>
+                    <button onclick="closeUserMenu(); openLogoutModal();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-tertiary font-bold hover:bg-red-50">
+                        <span class="material-symbols-outlined text-lg">logout</span> Déconnexion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-24 md:pb-10 md:ml-64 px-6 min-h-screen">
+        
+        <div id="section-overview" class="max-w-5xl mx-auto animate-fade-down">
+            <section class="mb-10">
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Bonjour, Marcel ! 👋</h1>
+                <p class="text-on-surface-variant font-medium">IUT de Douala — L2 Génie Électrique</p>
+            </section>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined">menu_book</span>
+                    </div>
+                    <p class="text-sm font-bold text-slate-400 uppercase">Cours suivis</p>
+                    <p class="text-3xl font-black">12</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined">assignment_late</span>
+                    </div>
+                    <p class="text-sm font-bold text-slate-400 uppercase">Devoirs à rendre</p>
+                    <p class="text-3xl font-black">04</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-1">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined">workspace_premium</span>
+                    </div>
+                    <p class="text-sm font-bold text-slate-400 uppercase">Moyenne Générale</p>
+                    <p class="text-3xl font-black">14.85</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-xl">Derniers supports ajoutés</h3>
+                    <button data-nav="courses" class="text-primary text-sm font-bold hover:underline">Voir tout</button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm">Automatisme Industriel - Chap 2</h4>
+                            <p class="text-xs text-slate-400">Posté hier par Dr. Tagne</p>
+                        </div>
+                        <button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">download</button>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">slideshow</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm">Bases de Données SQL - Intro</h4>
+                            <p class="text-xs text-slate-400">Posté lundi par Pr. Ebanda</p>
+                        </div>
+                        <button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-courses" class="hidden max-w-5xl mx-auto">
+            <section class="mb-10">
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Mes Cours</h1>
+                <p class="text-on-surface-variant font-medium">Reprenez votre apprentissage là où vous l'avez laissé.</p>
+            </section>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                    <div class="h-32 bg-gradient-to-r from-primary to-primary-container relative">
+                        <div class="absolute inset-0 opacity-20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-8xl text-white mix-blend-overlay">memory</span>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-white/20 text-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold">GEII</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Dr. Tagne Jean</p>
+                        <h3 class="text-xl font-bold mb-4">Automatisme Industriel</h3>
+                        <div class="mt-auto space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-500">
+                                    <span>Progression</span>
+                                    <span class="text-primary">65%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[65%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 bg-primary/10 text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-colors">Reprendre le cours</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                    <div class="h-32 bg-gradient-to-r from-blue-600 to-blue-400 relative">
+                        <div class="absolute inset-0 opacity-20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-8xl text-white mix-blend-overlay">database</span>
+                        </div>
+                        <span class="absolute top-4 right-4 bg-white/20 text-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold">INFO</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Pr. Marie Ebanda</p>
+                        <h3 class="text-xl font-bold mb-4">Bases de Données Avancées</h3>
+                        <div class="mt-auto space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-500">
+                                    <span>Progression</span>
+                                    <span class="text-blue-600">30%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-blue-600 h-full w-[30%] rounded-full"></div>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-colors">Reprendre le cours</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-community" class="hidden max-w-5xl mx-auto">
+            <section class="mb-10">
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Communautés d'entraide</h1>
+                <p class="text-on-surface-variant font-medium">Échangez avec d'autres étudiants, posez vos questions et partagez vos connaissances.</p>
+            </section>
+            <div class="md:hidden mb-6">
+                <div class="relative w-full">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <input type="text" id="mobileCommunitySearchInput" placeholder="Rechercher une communauté..." 
+                           class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                </div>
+            </div>
+            <div id="communitiesList" class="space-y-6">
+                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Automatisme Industriel" data-description="Automatisme, grafcet, API, capteurs" data-members="124">
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">forum</span> Groupe — Automatisme Industriel</h3><p class="text-sm text-slate-500 mt-1">124 membres · 15 discussions actives</p></div>
+                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
+                    </div>
+                    <p class="text-slate-600 text-sm">Dernier message : "Quelqu'un a-t-il compris le schéma du grafcet ?" - Il y a 2 heures</p>
+                </div>
+                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Club Python & Data" data-description="Python,数据分析, machine learning, data science" data-members="89">
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">code_blocks</span> Club Python & Data</h3><p class="text-sm text-slate-500 mt-1">89 membres · 8 discussions actives</p></div>
+                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
+                    </div>
+                    <p class="text-slate-600 text-sm">Dernier message : "Projet de fin de semestre : application de gestion de notes" - Il y a 1 jour</p>
+                </div>
+                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Forum Génie Électrique" data-description="Génie électrique, électronique, convertisseurs, circuits" data-members="210">
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">psychology</span> Forum Génie Électrique</h3><p class="text-sm text-slate-500 mt-1">210 membres · 32 discussions actives</p></div>
+                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
+                    </div>
+                    <p class="text-slate-600 text-sm">Dernier message : "Cours de convertisseurs statiques - exercice corrigé disponible" - Il y a 5 heures</p>
+                </div>
+                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Mathématiques Supérieures" data-description="Algèbre, analyse, probabilités, statistiques" data-members="156">
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">calculate</span> Mathématiques Supérieures</h3><p class="text-sm text-slate-500 mt-1">156 membres · 22 discussions actives</p></div>
+                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
+                    </div>
+                    <p class="text-slate-600 text-sm">Dernier message : "Exercice corrigé : intégrales doubles" - Il y a 3 jours</p>
+                </div>
+                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Droit des Affaires Cameroun" data-description="OHADA, droit commercial, contrats" data-members="98">
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">gavel</span> Droit des Affaires Cameroun</h3><p class="text-sm text-slate-500 mt-1">98 membres · 12 discussions actives</p></div>
+                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
+                    </div>
+                    <p class="text-slate-600 text-sm">Dernier message : "Cas pratique sur la vente commerciale" - Il y a 2 jours</p>
+                </div>
+            </div>
+            <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-3xl border border-gray-100">
+                <span class="material-symbols-outlined text-5xl text-slate-300 mb-3">search_off</span>
+                <p class="text-slate-500 font-medium">Aucune communauté ne correspond à votre recherche.</p>
+                <p class="text-sm text-slate-400 mt-1">Essayez d'autres mots-clés.</p>
+            </div>
+            <div class="mt-8 text-center">
+                <button onclick="window.location.href='PageCommunauté.html'" 
+                        class="px-8 py-3 bg-primary/10 text-primary font-bold rounded-full hover:bg-primary hover:text-white transition-all inline-flex items-center gap-2">
+                    <span class="material-symbols-outlined">explore</span>
+                    Voir plus de communautés
+                </button>
+            </div>
+        </div>
+
+        <div id="section-assignments" class="hidden max-w-5xl mx-auto">
+            <section class="mb-10">
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Mes Devoirs</h1>
+                <p class="text-on-surface-variant font-medium">Travaux à rendre et évaluations en cours.</p>
+            </section>
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="divide-y divide-gray-100">
+                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center"><span class="material-symbols-outlined">timer</span></div><div><h3 class="font-bold">Automatisme Industriel - TD n°3</h3><p class="text-xs text-slate-400">À rendre le 15 mai 2026 - Dr. Tagne</p></div></div>
+                        <div class="flex items-center gap-3"><span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold">Urgent</span><button class="text-sm text-primary font-bold hover:underline">Voir détails</button></div>
+                    </div>
+                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined">assignment</span></div><div><h3 class="font-bold">Base de Données - Modélisation MERISE</h3><p class="text-xs text-slate-400">À rendre le 22 mai 2026 - Pr. Ebanda</p></div></div>
+                        <div><button class="text-sm text-primary font-bold hover:underline">Voir détails</button></div>
+                    </div>
+                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center"><span class="material-symbols-outlined">check_circle</span></div><div><h3 class="font-bold">Algorithmique - Projet fil rouge</h3><p class="text-xs text-slate-400">Rendu le 05 avril 2026 (corrigé disponible)</p></div></div>
+                        <div><span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">Corrigé ✅</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-profile" class="hidden max-w-4xl mx-auto">
+            <section class="mb-8">
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Mon Profil</h1>
+                <p class="text-on-surface-variant font-medium">Gérez vos informations personnelles et académiques.</p>
+            </section>
+
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="p-8 border-b border-gray-100 flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <div class="flex-shrink-0">
+                        <img src="https://ui-avatars.com/api/?name=Marcel+Etudiant&background=00602a&color=fff&size=128" class="w-32 h-32 rounded-full ring-4 ring-primary/20" alt="Avatar">
+                        <button class="mt-4 text-sm text-primary font-semibold flex items-center gap-1 mx-auto"><span class="material-symbols-outlined text-base">edit</span> Modifier photo</button>
+                    </div>
+                    <div class="flex-grow space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Prénom</label><p class="text-slate-800 font-medium">Marcel</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Nom</label><p class="text-slate-800 font-medium">Tchinda</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Email académique</label><p class="text-slate-800 font-medium">marcel.tchinda@etu.cm</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Matricule</label><p class="text-slate-800 font-medium">IU22-0345</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Filière</label><p class="text-slate-800 font-medium">Génie Électrique (L2)</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Université</label><p class="text-slate-800 font-medium">IUT de Douala - Université de Douala</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Téléphone</label><p class="text-slate-800 font-medium">+237 6XX XXX XXX</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Moyenne générale</label><p class="text-slate-800 font-medium">14.85 / 20</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-8 py-5 flex flex-wrap justify-end gap-3">
+                    <button class="px-6 py-2 border border-gray-300 rounded-full text-sm font-semibold text-slate-600 hover:bg-white transition">Annuler</button>
+                    <button class="px-6 py-2 bg-primary text-white rounded-full text-sm font-bold hover:bg-primary/90 transition">Enregistrer les modifications</button>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">security</span> Sécurité du compte</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center flex-wrap gap-3"><span class="text-slate-600">Mot de passe</span><button class="text-sm text-primary font-semibold">Changer le mot de passe</button></div>
+                    <div class="flex justify-between items-center flex-wrap gap-3"><span class="text-slate-600">Double authentification</span><button class="text-sm text-primary font-semibold">Activer</button></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-2 flex justify-around items-center z-50">
+        <button data-nav="overview" class="mobile-nav-btn flex flex-col items-center p-2 text-primary focus:outline-none transition-colors">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+            <span class="text-[10px] font-bold">Accueil</span>
+        </button>
+        <button data-nav="community" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+            <span class="material-symbols-outlined">groups</span>
+            <span class="text-[10px] font-bold">Groupes</span>
+        </button>
+        <button data-nav="assignments" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+            <span class="material-symbols-outlined">assignment</span>
+            <span class="text-[10px] font-bold">Devoirs</span>
+        </button>
+        <button data-nav="courses" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+            <span class="material-symbols-outlined">auto_stories</span>
+            <span class="text-[10px] font-bold">Cours</span>
+        </button>
+        <button data-nav="profile" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-bold">Profil</span>
+        </button>
+        <button onclick="openLogoutModal()" class="flex flex-col items-center p-2 text-tertiary focus:outline-none">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-[10px] font-bold">Quitter</span>
+        </button>
+    </nav>
+
+    <div id="logoutModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="closeLogoutModal()"></div>
+        <div id="logoutCard" class="relative w-full max-w-sm bg-white rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 opacity-0 scale-90">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-red-50 text-tertiary rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-4xl">logout</span>
+                </div>
+                <h3 class="text-2xl font-black mb-2 font-headline">Déconnexion</h3>
+                <p class="text-slate-500 text-sm mb-8 leading-relaxed">Êtes-vous sûr de vouloir quitter votre espace étudiant ?</p>
+                <div class="flex gap-3 w-full">
+                    <button onclick="closeLogoutModal()" class="flex-1 py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-100 transition-all">Annuler</button>
+                    <button onclick="confirmLogout()" class="flex-1 py-4 bg-tertiary text-white rounded-2xl font-bold text-sm shadow-lg shadow-tertiary/20 hover:scale-105 active:scale-95 transition-all">Quitter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sections = ['overview', 'courses', 'community', 'assignments', 'profile'];
+        const titles = {
+            overview: 'Tableau de bord',
+            courses: 'Mes Cours',
+            community: 'Communautés',
+            assignments: 'Mes Devoirs',
+            profile: 'Mon Profil'
+        };
+
+        const searchContainer = document.getElementById('searchContainer');
+        const communitySearchInput = document.getElementById('communitySearchInput');
+        const mobileCommunitySearchInput = document.getElementById('mobileCommunitySearchInput');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        function filterCommunities(searchTerm) {
+            const cards = document.querySelectorAll('.community-card');
+            let hasVisible = false;
+            const term = searchTerm.toLowerCase().trim();
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name')?.toLowerCase() || '';
+                const description = card.getAttribute('data-description')?.toLowerCase() || '';
+                const members = card.getAttribute('data-members') || '';
+                if (term === '' || name.includes(term) || description.includes(term) || members.includes(term)) {
+                    card.style.display = '';
+                    hasVisible = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            if (noResultsMessage) {
+                if (!hasVisible && term !== '') noResultsMessage.classList.remove('hidden');
+                else noResultsMessage.classList.add('hidden');
+            }
+        }
+
+        function setupSearchSync() {
+            const updateSearch = (value) => {
+                if (communitySearchInput && communitySearchInput.value !== value) communitySearchInput.value = value;
+                if (mobileCommunitySearchInput && mobileCommunitySearchInput.value !== value) mobileCommunitySearchInput.value = value;
+                filterCommunities(value);
+            };
+            if (communitySearchInput) communitySearchInput.addEventListener('input', (e) => updateSearch(e.target.value));
+            if (mobileCommunitySearchInput) mobileCommunitySearchInput.addEventListener('input', (e) => updateSearch(e.target.value));
+        }
+
+        function navigateTo(target) {
+            sections.forEach(s => {
+                const el = document.getElementById('section-' + s);
+                if (el) { el.classList.add('hidden'); el.classList.remove('animate-fade-down'); }
+            });
+            const targetEl = document.getElementById('section-' + target);
+            if (targetEl) {
+                targetEl.classList.remove('hidden');
+                void targetEl.offsetWidth;
+                targetEl.classList.add('animate-fade-down');
+            }
+            const titleEl = document.getElementById('page-title');
+            if (titleEl && titles[target]) titleEl.textContent = titles[target];
+
+            if (target === 'community') {
+                if (searchContainer) searchContainer.classList.remove('hidden');
+                if (communitySearchInput) communitySearchInput.value = '';
+                if (mobileCommunitySearchInput) mobileCommunitySearchInput.value = '';
+                filterCommunities('');
+            } else {
+                if (searchContainer) searchContainer.classList.add('hidden');
+            }
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const btnTarget = btn.getAttribute('data-nav');
+                if (btnTarget === target) {
+                    btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all";
+                } else {
+                    btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all";
+                }
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                const btnTarget = btn.getAttribute('data-nav');
+                if (btnTarget === target) {
+                    btn.classList.add('text-primary');
+                    btn.classList.remove('text-slate-400');
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+                } else {
+                    btn.classList.add('text-slate-400');
+                    btn.classList.remove('text-primary');
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => { const t = btn.getAttribute('data-nav'); if (t) navigateTo(t); });
+            });
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => { const t = btn.getAttribute('data-nav'); if (t) navigateTo(t); });
+            });
+            navigateTo('overview');
+            setupSearchSync();
+        });
+
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('dropdown-active');
+        }
+        function closeUserMenu() { 
+            const menu = document.getElementById('userMenu');
+            menu.classList.add('hidden');
+            menu.classList.remove('dropdown-active');
+        }
+        function toggleNotifMenu() {
+            const menu = document.getElementById('notifMenu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('dropdown-active');
+        }
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('user-avatar-wrapper')?.contains(e.target)) closeUserMenu();
+            if (!document.getElementById('notif-wrapper')?.contains(e.target)) {
+                const notifMenu = document.getElementById('notifMenu');
+                if (notifMenu) { notifMenu.classList.add('hidden'); notifMenu.classList.remove('dropdown-active'); }
+            }
+        });
+
+        function openLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            const card = document.getElementById('logoutCard');
+            if (!modal || !card) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                card.classList.remove('opacity-0', 'scale-90');
+                card.classList.add('opacity-100', 'scale-100');
+            }));
+        }
+        function closeLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            const card = document.getElementById('logoutCard');
+            if (!modal || !card) return;
+            card.classList.remove('opacity-100', 'scale-100');
+            card.classList.add('opacity-0', 'scale-90');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+        function confirmLogout() {
+            const card = document.getElementById('logoutCard');
+            if (card) {
+                card.innerHTML = `<div class="flex flex-col items-center justify-center gap-4 py-8"><span class="material-symbols-outlined text-primary text-5xl animate-spin">autorenew</span><p class="font-bold text-slate-500 text-lg">Déconnexion en cours...</p></div>`;
+            }
+            setTimeout(() => window.location.href = 'indexconnexion.html', 1200);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Connexion - CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00602a",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#3f493f",
+                        "background": "#f8f9fb",
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #00602a 0%, #1a7a3c 100%); }
+        .academic-gradient { background: linear-gradient(135deg, #00602a 0%, #1a7a3c 100%); }
+        .tonal-elevation { box-shadow: 0px 12px 32px rgba(25, 28, 30, 0.08); }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        .loader-content {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            max-width: 90%;
+            width: 320px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00602a;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden bg-[#f8f9fb]">
+
+    <div class="fixed top-5 right-5 z-50">
+        <button id="langToggle" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-base">language</span>
+            <span id="langLabel">FR</span>
+        </button>
+    </div>
+
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute -top-24 -left-24 w-96 h-96 hero-gradient opacity-10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] hero-gradient opacity-10 rounded-full blur-3xl"></div>
+    </div>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="w-full max-w-md">
+            <div class="bg-white rounded-2xl p-10 tonal-elevation border border-gray-100 flex flex-col gap-8">
+                
+                <div class="flex flex-col items-center text-center">
+                    <div class="flex items-center gap-2 mb-6 fade-up">
+                        <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">school</span>
+                        <span class="font-headline font-extrabold text-2xl tracking-tight text-primary"><span class="text-on-surface">Camuno</span>Learn</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h1 class="font-headline text-2xl font-bold text-on-surface tracking-tight text-gray-900 text-center fade-up" data-i18n="login_title">Bon retour parmi nous</h1>
+                        <p class="font-body text-gray-500 text-sm fade-up" data-i18n="login_subtitle">Connectez-vous pour continuer votre apprentissage</p>
+                    </div>
+                </div>
+
+                <form id="loginForm" class="space-y-6 fade-up">
+                    <div class="space-y-1.5">
+                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="email_label">Email / Identifiant</label>
+                        <div class="relative flex items-center bg-gray-50 rounded-xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                            <span class="material-symbols-outlined text-gray-400 mr-3 text-[1.2rem]">mail</span>
+                            <input id="emailInput" class="bg-transparent border-none focus:ring-0 w-full font-body text-sm text-on-surface" 
+                                   type="email" required data-i18n-placeholder="email_placeholder" placeholder="nom@exemple.com"/>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="password_label">Mot de passe</label>
+                        <div class="relative flex items-center bg-gray-50 rounded-xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                            <span class="material-symbols-outlined text-gray-400 mr-3 text-[1.2rem]">lock</span>
+                            <input id="passwordInput" class="bg-transparent border-none focus:ring-0 w-full font-body text-sm text-on-surface" 
+                                   type="password" required data-i18n-placeholder="password_placeholder" placeholder="••••••••"/>
+                            <button type="button" id="togglePassword" class="flex items-center justify-center text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                                <span class="material-symbols-outlined text-[1.2rem]" id="passwordIcon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between px-1">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4 border-gray-300"/>
+                            <span class="text-xs text-gray-500" data-i18n="remember_me">Rester connecté</span>
+                        </label>
+                        <a class="text-xs font-bold text-primary hover:underline" href="#" data-i18n="forgot_password">Oublié ?</a>
+                    </div>
+
+                    <button type="submit" class="w-full academic-gradient text-white py-4 rounded-xl font-headline font-bold text-sm tracking-wide shadow-lg shadow-primary/20 hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2" data-i18n="login_button">
+                        Se connecter
+                        <span class="material-symbols-outlined text-[1.2rem]">arrow_forward</span>
+                    </button>
+                </form>
+
+                <div class="pt-4 flex flex-col gap-6 text-center fade-up">
+                    <div class="h-[1px] w-full bg-gray-100"></div>
+                    <p class="font-body text-sm text-gray-500">
+                        <span data-i18n="new_user_text">Nouveau sur la plateforme ?</span>
+                        <a class="text-primary font-bold hover:underline ml-1" href="indexinscription.html" data-i18n="create_account_link">Créer un compte</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-8 bg-white border-t border-gray-100 mt-auto">
+        <div class="max-w-7xl mx-auto px-8 flex justify-between items-center text-gray-400 text-xs font-medium">
+            <p data-i18n="footer_copyright">© 2026 CamunoLearn</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-primary" data-i18n="footer_help">Aide</a>
+                <a href="#" class="hover:text-primary" data-i18n="footer_privacy">Confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="loaderOverlay" class="loader-overlay" style="display: none;">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h3 class="font-headline font-bold text-xl text-gray-800 mb-1" id="loaderTitle">Authentification</h3>
+            <p class="text-gray-500 text-sm" id="loaderMessage">Vérification de vos identifiants...</p>
+        </div>
+    </div>
+
+    <script>
+        // Translations dictionary (inchangé)
+        const translations = {
+            fr: {
+                login_title: "Bon retour parmi nous",
+                login_subtitle: "Connectez-vous pour continuer votre apprentissage",
+                email_label: "Email / Identifiant",
+                email_placeholder: "nom@exemple.com",
+                password_label: "Mot de passe",
+                password_placeholder: "••••••••",
+                remember_me: "Rester connecté",
+                forgot_password: "Oublié ?",
+                login_button: "Se connecter",
+                new_user_text: "Nouveau sur la plateforme ?",
+                create_account_link: "Créer un compte",
+                footer_copyright: "© 2026 CamunoLearn",
+                footer_help: "Aide",
+                footer_privacy: "Confidentialité"
+            },
+            en: {
+                login_title: "Welcome back",
+                login_subtitle: "Log in to continue your learning journey",
+                email_label: "Email / Username",
+                email_placeholder: "name@example.com",
+                password_label: "Password",
+                password_placeholder: "••••••••",
+                remember_me: "Stay signed in",
+                forgot_password: "Forgot?",
+                login_button: "Log in",
+                new_user_text: "New to the platform?",
+                create_account_link: "Create an account",
+                footer_copyright: "© 2026 CamunoLearn",
+                footer_help: "Help",
+                footer_privacy: "Privacy"
+            }
+        };
+
+        let currentLang = 'fr';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+            document.getElementById('langLabel').innerText = lang.toUpperCase();
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) el.placeholder = translations[lang][key];
+            });
+        }
+
+        const toggleBtn = document.getElementById('langToggle');
+        toggleBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'fr' ? 'en' : 'fr';
+            updateLanguage(newLang);
+        });
+
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#passwordInput');
+        const passwordIcon = document.querySelector('#passwordIcon');
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            passwordIcon.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-up').forEach((el, i) => {
+                setTimeout(() => el.classList.add('show'), 150 + i * 160);
+            });
+            updateLanguage('fr');
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('emailInput');
+        const loaderOverlay = document.getElementById('loaderOverlay');
+        const loaderTitle = document.getElementById('loaderTitle');
+        const loaderMessage = document.getElementById('loaderMessage');
+        function authenticateUser(email, password) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    let role = 'etudiant'; 
+                    if (email.includes('admin') || email === 'admin@camunolearn.cm') {
+                        role = 'admin';
+                    } else if (email.includes('prof') || email.includes('enseignant')) {
+                        role = 'enseignant';
+                    } else if (email.includes('etudiant')) {
+                        role = 'etudiant';
+                    }
+                    
+                    if (password.trim() === '') {
+                        resolve({ success: false, message: 'Mot de passe incorrect' });
+                    } else {
+                        resolve({ success: true, role: role });
+                    }
+                }, 1500);
+            });
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!email || !password) {
+                alert(currentLang === 'fr' ? 'Veuillez remplir tous les champs.' : 'Please fill in all fields.');
+                return;
+            }
+
+            loaderOverlay.style.display = 'flex';
+            loaderTitle.textContent = currentLang === 'fr' ? 'Authentification' : 'Authentication';
+            loaderMessage.textContent = currentLang === 'fr' ? 'Vérification de vos identifiants...' : 'Verifying your credentials...';
+
+            try {
+                const result = await authenticateUser(email, password);
+                if (result.success) {
+                    
+                    localStorage.setItem('userRole', result.role);
+                    localStorage.setItem('userEmail', email);
+                    loaderTitle.textContent = currentLang === 'fr' ? 'Authentification réussie !' : 'Authentication successful!';
+                    loaderMessage.textContent = currentLang === 'fr' ? 'Redirection en cours...' : 'Redirecting...';
+                    setTimeout(() => {
+                        switch (result.role) {
+                            case 'admin':
+                                window.location.href = 'indexADMIN.html';
+                                break;
+                            case 'enseignant':
+                                window.location.href = 'indexEnseignant.html';
+                                break;
+                            case 'etudiant':
+                            default:
+                                window.location.href = 'indexETUDIANT.html';
+                                break;
+                        }
+                    }, 1000);
+                } else {
+
+                    loaderOverlay.style.display = 'none';
+                    alert(currentLang === 'fr' ? result.message : result.message);
+                }
+            } catch (error) {
+                loaderOverlay.style.display = 'none';
+                alert(currentLang === 'fr' ? 'Erreur de connexion. Veuillez réessayer.' : 'Connection error. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Administration | CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#00602a",
+                    "on-surface": "#191c1e",
+                    "on-surface-variant": "#3f493f",
+                    "background": "#f8f9fb",
+                    "surface": "#ffffff",
+                    "tertiary": "#a90111",
+                    "admin-blue": "#004a77"
+            },
+            "fontFamily": { "headline": ["Manrope"], "body": ["Inter"] }
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .animate-reveal {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+
+      .delay-1 { animation-delay: 0.2s; }
+      .delay-2 { animation-delay: 0.4s; }
+      .delay-3 { animation-delay: 0.6s; }
+
+      .dropdown-active { display: block !important; animation: fadeIn 0.2s ease-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script>
+        (function() {
+            const userRole = localStorage.getItem('userRole');
+           
+            if (!userRole || userRole !== 'admin') {
+                window.location.href = 'indexconnexion.html?error=unauthorized';
+            }
+        })();
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body">
+
+<aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 z-50 p-6">
+    <div class="flex items-center gap-2 mb-10">
+        <span class="material-symbols-outlined text-admin-blue text-3xl" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+        <span class="text-xl font-black tracking-tight text-admin-blue font-headline">Camuno<span class="text-on-surface">Learn</span></span>
+    </div>
+    <nav class="flex flex-col gap-2 flex-grow">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-admin-blue font-bold">
+            <span class="material-symbols-outlined">analytics</span>
+            <span>Supervision</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+            <span class="material-symbols-outlined">person_add</span>
+            <span>Utilisateurs</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+            <span class="material-symbols-outlined">account_tree</span>
+            <span>Filières</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+            <span class="material-symbols-outlined">description</span>
+            <span>Rapports</span>
+        </a>
+    </nav>
+    <div class="border-t pt-6">
+        <a href="indexconnexion.html" class="flex items-center gap-3 px-4 py-3 text-tertiary font-bold hover:bg-red-50 rounded-xl transition-colors">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Déconnexion</span>
+        </a>
+    </div>
+</aside>
+
+<header class="fixed top-0 right-0 left-0 md:left-64 h-20 bg-white/80 backdrop-blur-md border-b border-gray-50 z-40 px-6 flex justify-between items-center">
+    <h2 class="font-headline font-bold text-lg text-slate-700">Portail Administratif</h2>
+    
+    <div class="flex items-center gap-4">
+        <div class="relative">
+            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full ring-2 ring-admin-blue p-0.5 overflow-hidden transition-transform active:scale-95">
+                <img src="https://ui-avatars.com/api/?name=Admin+Camuno&background=004a77&color=fff" class="w-full h-full rounded-full object-cover" alt="Profile">
+            </button>
+            <div id="userMenu" class="hidden absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50">
+                    <span class="material-symbols-outlined text-lg">manage_accounts</span> Profil Admin
+                </a>
+                <div class="border-t border-gray-50 my-2"></div>
+                <a href="indexconnexion.html" onclick="localStorage.removeItem('userRole');" class="flex items-center gap-3 px-4 py-2 text-sm text-tertiary font-bold hover:bg-red-50">
+                    <span class="material-symbols-outlined text-lg">logout</span> Déconnexion
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="pt-24 pb-24 md:ml-64 px-6 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10">
+            <h1 class="text-4xl font-black mb-2 animate-reveal">Tableau de bord de Gestion</h1>
+            <p class="text-on-surface-variant font-medium animate-reveal delay-1">Bienvenue sur l'interface de contrôle de CamunoLearn.</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 animate-reveal delay-2">
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Étudiants Inscrits</p>
+                <p class="text-3xl font-black text-admin-blue">2,450</p>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Professeurs Actifs</p>
+                <p class="text-3xl font-black text-admin-blue">124</p>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Filières (GEII, etc)</p>
+                <p class="text-3xl font-black text-admin-blue">08</p>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Nouveaux Inscrits</p>
+                <p class="text-3xl font-black text-green-600">+12</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-reveal delay-3">
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-admin-blue">person_search</span>
+                    Gestion des comptes
+                </h3>
+                <div class="space-y-4">
+                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
+                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Inscrire un nouvel étudiant</span>
+                        <span class="material-symbols-outlined">add_circle</span>
+                    </button>
+                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
+                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Ajouter un professeur</span>
+                        <span class="material-symbols-outlined">person_add_alt_1</span>
+                    </button>
+                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
+                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Liste complète des utilisateurs</span>
+                        <span class="material-symbols-outlined">list_alt</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-admin-blue">monitoring</span>
+                    Analyse & Rapports
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
+                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">cloud_download</span>
+                        <p class="text-xs font-bold text-slate-600">Stats Filières</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
+                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">history_edu</span>
+                        <p class="text-xs font-bold text-slate-600">Rapports Examens</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
+                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">assignment_ind</span>
+                        <p class="text-xs font-bold text-slate-600">Audit Comptes</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
+                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">settings_suggest</span>
+                        <p class="text-xs font-bold text-slate-600">Config Systèmes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function toggleUserMenu() {
+        const menu = document.getElementById('userMenu');
+        menu.classList.toggle('hidden');
+        menu.classList.toggle('dropdown-active');
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.relative')) {
+            const menu = document.getElementById('userMenu');
+            if (menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                menu.classList.remove('dropdown-active');
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Espace Professeur | CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "background": "#f8f9fb",
+                    "surface": "#f8f9fb",
+                    "on-surface": "#191c1e",
+                    "primary": "#ea580c",
+                    "primary-container": "#fb923c",
+                    "secondary": "#5d5c74",
+                    "tertiary": "#a90111",
+                    "outline": "#85736e",
+                    "outline-variant": "#d8c2bc",
+                    "on-surface-variant": "#53433f"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope", "sans-serif"],
+                    "body": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .nav-card-active {
+        background: #ea580c; /* Orange */
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.3);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body">
+
+<div class="flex min-h-screen">
+    <aside class="hidden md:flex flex-col w-72 bg-white border-r border-slate-100 p-6 fixed h-full z-50">
+    <div class="flex items-center gap-2 mb-10">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">school</span>
+            <span class="text-xl font-black tracking-tight text-primary font-headline"><span class="text-on-surface">Camuno</span>Learn</span>
+        </div>
+
+        <nav class="flex flex-col gap-2">
+            <button onclick="navigateTo('dashboard')" id="nav-dashboard" class="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-400 hover:bg-slate-50 transition-all group">
+                <span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+                <span class="font-bold text-sm">Tableau de bord</span>
+            </button>
+            <button onclick="navigateTo('classes')" id="nav-classes" class="flex items-center gap-4 px-4 py-3 rounded-2xl nav-card-active transition-all">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="font-bold text-sm">Mes Classes</span>
+            </button>
+            <button onclick="navigateTo('devoirs')" id="nav-devoirs" class="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-400 hover:bg-slate-50 transition-all group">
+                <span class="material-symbols-outlined group-hover:text-primary">assignment</span>
+                <span class="font-bold text-sm">Gestion Devoirs</span>
+            </button>
+            <button onclick="navigateTo('stats')" id="nav-stats" class="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-400 hover:bg-slate-50 transition-all group">
+                <span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+                <span class="font-bold text-sm">Statistiques</span>
+            </button>
+        </nav>
+
+        <div class="mt-auto">
+            <div class="bg-slate-50 rounded-2xl p-4 mb-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-sm">info</span>
+                    </div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Aide & Support</p>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">Besoin d'aide pour vos cours ? Contactez le support technique.</p>
+            </div>
+            <button onclick="openLogoutModal()" class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-tertiary font-bold hover:bg-red-50 transition-all">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm">Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 md:ml-72 min-h-screen">
+        <header class="sticky top-0 z-40 w-full px-6 py-4 flex justify-between items-center glass-effect border-b border-slate-100">
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Espace Enseignant</p>
+                <h2 id="page-title" class="text-xl font-headline font-800">Mes Classes</h2>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative" id="notif-wrapper">
+                    <button onclick="toggleNotifMenu()" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                    
+                    <div id="notifMenu" class="hidden absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden">
+                        <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                            <h4 class="font-headline font-bold text-sm">Notifications</h4>
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase cursor-pointer hover:text-primary">Tout lire</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center py-10 px-6 text-center gap-3">
+                            <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined text-slate-400 text-2xl">notifications_off</span>
+                            </div>
+                            <p class="font-bold text-sm text-slate-600">Aucune notification</p>
+                            <p class="text-xs text-slate-400 leading-relaxed">Vous êtes à jour ! Les nouvelles activités apparaîtront ici.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-8 w-[1px] bg-slate-100"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-bold">Dr. Tagne Jean</p>
+                        <p class="text-[10px] text-primary font-medium">Chef de filière GEII</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden shadow-md">
+                        <img src="https://ui-avatars.com/api/?name=Tagne+Jean&background=ea580c&color=fff" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="section-dashboard" class="hidden p-6 lg:p-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-black mb-1">Vue d'ensemble</h3>
+                    <p class="text-sm text-slate-400">Semestre 2 — 2025/2026</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-orange-50 text-primary rounded-xl flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-xl">groups</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Étudiants</p>
+                        <p class="text-3xl font-black">214</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-xl">auto_stories</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Cours Actifs</p>
+                        <p class="text-3xl font-black">4</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-xl">assignment_late</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Copies à corriger</p>
+                        <p class="text-3xl font-black text-amber-600">12</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-xl">workspace_premium</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Moyenne classe</p>
+                        <p class="text-3xl font-black text-green-600">13.2</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                    <h4 class="font-headline font-bold text-lg mb-6">Activité récente</h4>
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
+                            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary"><span class="material-symbols-outlined text-xl">assignment_turned_in</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold">Mekongo Pierre a rendu son TP</p>
+                                <p class="text-xs text-slate-400">Automatisme Industriel — Il y a 5 min</p>
+                            </div>
+                            <span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-1 rounded-full">NOUVEAU</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
+                            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500"><span class="material-symbols-outlined text-xl">person_add</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold">3 nouveaux étudiants inscrits</p>
+                                <p class="text-xs text-slate-400">Bases de Données L1 — Il y a 1 h</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
+                            <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-500"><span class="material-symbols-outlined text-xl">check_circle</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold">Talla Alice — Script SQL corrigé</p>
+                                <p class="text-xs text-slate-400">Bases de Données — Il y a 15 min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-classes" class="p-6 lg:p-10 flex flex-col lg:flex-row gap-8">
+            <div class="flex-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h3 class="text-2xl font-black mb-1">Vos Classes Actives</h3>
+                        <p class="text-sm text-slate-400">Semestre 2 — 2025/2026</p>
+                    </div>
+                    <button class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm shadow-lg shadow-primary/25 hover:-translate-y-1 transition-all">
+                        <span class="material-symbols-outlined text-lg">add_circle</span>
+                        Créer une classe
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined text-3xl">developer_board</span>
+                            </div>
+                            <span class="text-[10px] font-black px-3 py-1 bg-green-50 text-green-600 rounded-full">ACTIVE</span>
+                        </div>
+                        <h4 class="font-headline font-800 text-lg mb-2">Automatisme Ind.</h4>
+                        <p class="text-xs text-slate-400 mb-6 uppercase font-bold tracking-wider">Niveau : GEII L2</p>
+                        <div class="flex items-center justify-between border-t border-slate-50 pt-4">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-primary flex items-center justify-center text-[10px] text-white font-bold">+45</div>
+                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+                                <span class="material-symbols-outlined text-3xl">database</span>
+                            </div>
+                            <span class="text-[10px] font-black px-3 py-1 bg-green-50 text-green-600 rounded-full">ACTIVE</span>
+                        </div>
+                        <h4 class="font-headline font-800 text-lg mb-2">Bases de Données</h4>
+                        <p class="text-xs text-slate-400 mb-6 uppercase font-bold tracking-wider">Niveau : L1 INFO</p>
+                        <div class="flex items-center justify-between border-t border-slate-50 pt-4">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-primary flex items-center justify-center text-[10px] text-white font-bold">+112</div>
+                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600">
+                                <span class="material-symbols-outlined text-3xl">memory</span>
+                            </div>
+                            <span class="text-[10px] font-black px-3 py-1 bg-amber-50 text-amber-600 rounded-full">EXAM BIENTÔT</span>
+                        </div>
+                        <h4 class="font-headline font-800 text-lg mb-2">Systèmes Embarqués</h4>
+                        <p class="text-xs text-slate-400 mb-6 uppercase font-bold tracking-wider">Niveau : GEII L3</p>
+                        <div class="flex items-center justify-between border-t border-slate-50 pt-4">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-primary flex items-center justify-center text-[10px] text-white font-bold">+32</div>
+                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600">
+                                <span class="material-symbols-outlined text-3xl">electrical_services</span>
+                            </div>
+                            <span class="text-[10px] font-black px-3 py-1 bg-slate-100 text-slate-500 rounded-full">ARCHIVÉ</span>
+                        </div>
+                        <h4 class="font-headline font-800 text-lg mb-2">Électrotechnique</h4>
+                        <p class="text-xs text-slate-400 mb-6 uppercase font-bold tracking-wider">Niveau : GEII L1</p>
+                        <div class="flex items-center justify-between border-t border-slate-50 pt-4">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[10px] text-white font-bold">+25</div>
+                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="w-full lg:w-80">
+                <div class="bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm">
+                    <h3 class="font-headline font-800 text-lg mb-6">Soumissions Récentes</h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-2 rounded-full bg-primary h-12"></div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold">Mekongo Pierre</p>
+                                <p class="text-[10px] text-slate-400 italic">TP_Automatisme_Final.pdf</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-[10px] font-black text-primary">À CORRIGER</span>
+                                    <span class="text-[10px] text-slate-300">Il y a 5m</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 opacity-60">
+                            <div class="w-2 rounded-full bg-slate-200 h-12"></div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold">Talla Alice</p>
+                                <p class="text-[10px] text-slate-400 italic">Script_SQL_V2.sql</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-[10px] font-black text-slate-400">CORRIGÉ</span>
+                                    <span class="text-[10px] text-slate-300">Il y a 15m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 py-3 border border-slate-100 text-primary text-xs font-bold rounded-2xl hover:bg-slate-50 transition-all">Voir tout le flux</button>
+                </div>
+            </aside>
+        </div>
+
+        <div id="section-devoirs" class="hidden p-6 lg:p-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h3 class="text-2xl font-black mb-1">Gestion des Devoirs</h3>
+                        <p class="text-sm text-slate-400">4 devoirs actifs · 12 copies en attente</p>
+                    </div>
+                    <button class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm shadow-lg shadow-primary/25 hover:-translate-y-1 transition-all">
+                        <span class="material-symbols-outlined text-lg">add_circle</span>
+                        Nouveau devoir
+                    </button>
+                </div>
+
+                <div class="border-2 border-dashed border-primary/30 rounded-3xl p-8 flex flex-col items-center text-center gap-3 mb-8 hover:border-primary transition-colors cursor-pointer group">
+                    <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">upload_file</span>
+                    </div>
+                    <h4 class="font-bold text-primary">Importer un sujet</h4>
+                    <p class="text-xs text-slate-400">Glissez un PDF ou utilisez l'éditeur CamunoLearn</p>
+                </div>
+
+                <div class="space-y-4">
+
+                    <div class="bg-white rounded-3xl p-6 border-l-4 border-tertiary shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="px-2 py-0.5 bg-red-100 text-tertiary text-[10px] font-bold rounded">URGENT</span>
+                                    <span class="text-xs text-slate-400">Échéance dépassée</span>
+                                </div>
+                                <h4 class="text-lg font-black">Projet Systèmes Embarqués</h4>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-black text-tertiary">12</p>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">À corriger</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 justify-end">
+                            <button class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold hover:bg-slate-50">Modifier</button>
+                            <button class="px-4 py-2 bg-tertiary text-white rounded-xl text-sm font-bold hover:opacity-90">Lancer la correction</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded">GEII — L2</span>
+                                    <span class="text-xs text-slate-400">Publié le 20/04</span>
+                                </div>
+                                <h4 class="text-lg font-black">TP : Automates Programmables</h4>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-black text-primary">45/60</p>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Rendus reçus</p>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mb-4">
+                            <div class="bg-primary h-full w-[75%] rounded-full"></div>
+                        </div>
+                        <div class="flex gap-2 justify-end">
+                            <button class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold hover:bg-slate-50">Modifier</button>
+                            <button class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:opacity-90">Voir les copies</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded">L1 INFO</span>
+                                    <span class="text-xs text-slate-400">Publié le 18/04</span>
+                                </div>
+                                <h4 class="text-lg font-black">TD : Jointures SQL Avancées</h4>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-black text-primary">98/112</p>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold">Rendus reçus</p>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mb-4">
+                            <div class="bg-blue-500 h-full w-[87%] rounded-full"></div>
+                        </div>
+                        <div class="flex gap-2 justify-end">
+                            <button class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold hover:bg-slate-50">Modifier</button>
+                            <button class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:opacity-90">Voir les copies</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-stats" class="hidden p-6 lg:p-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-black mb-1">Statistiques & Résultats</h3>
+                    <p class="text-sm text-slate-400">Aperçu des performances — Semestre 2 · 2025/2026</p>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-3xl font-black text-primary">14.2</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mt-1">Moy. GEII L2</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-3xl font-black text-blue-600">12.8</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mt-1">Moy. L1 INFO</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-3xl font-black text-green-600">78%</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mt-1">Taux réussite</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-3xl font-black text-amber-600">03</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mt-1">Retards prof.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm mb-6">
+                    <h4 class="font-headline font-bold text-lg mb-6">Moyenne par module</h4>
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span>Automatisme Industriel</span><span class="text-primary">14.5 / 20</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full">
+                                <div class="bg-primary h-full rounded-full" style="width:72%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span>Bases de Données</span><span class="text-blue-600">12.8 / 20</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full">
+                                <div class="bg-blue-500 h-full rounded-full" style="width:64%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span>Systèmes Embarqués</span><span class="text-purple-600">15.1 / 20</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full">
+                                <div class="bg-purple-500 h-full rounded-full" style="width:75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span>Électrotechnique</span><span class="text-teal-600">11.6 / 20</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full">
+                                <div class="bg-teal-500 h-full rounded-full" style="width:58%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                    <h4 class="font-headline font-bold text-lg mb-6">Distribution des notes — GEII L2</h4>
+                    <div class="flex items-end gap-3 h-32">
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-tertiary">4</span>
+                            <div class="w-full bg-red-200 rounded-t-lg" style="height:20%"></div>
+                            <span class="text-[9px] text-slate-400">0–5</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-amber-600">8</span>
+                            <div class="w-full bg-amber-300 rounded-t-lg" style="height:40%"></div>
+                            <span class="text-[9px] text-slate-400">5–10</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-yellow-600">14</span>
+                            <div class="w-full bg-yellow-300 rounded-t-lg" style="height:70%"></div>
+                            <span class="text-[9px] text-slate-400">10–12</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-primary">20</span>
+                            <div class="w-full bg-primary rounded-t-lg" style="height:100%"></div>
+                            <span class="text-[9px] text-slate-400">12–15</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-green-600">12</span>
+                            <div class="w-full bg-green-400 rounded-t-lg" style="height:60%"></div>
+                            <span class="text-[9px] text-slate-400">15–18</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[10px] font-bold text-blue-600">5</span>
+                            <div class="w-full bg-blue-400 rounded-t-lg" style="height:25%"></div>
+                            <span class="text-[9px] text-slate-400">18–20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="logoutModal" class="hidden fixed inset-0 z- flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm"></div>
+    <div id="logoutCard" class="relative w-full max-w-sm bg-white rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 opacity-0 scale-90">
+        <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 bg-red-50 text-tertiary rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-4xl">logout</span>
+            </div>
+            <h3 class="text-2xl font-black mb-2 font-headline">Déconnexion</h3>
+            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Êtes-vous sûr de vouloir quitter votre espace enseignant ?</p>
+            
+            <div class="flex gap-3 w-full">
+                <button onclick="closeLogoutModal()" class="flex-1 py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-100 transition-all">Annuler</button>
+                <button onclick="confirmLogout()" class="flex-1 py-4 bg-tertiary text-white rounded-2xl font-bold text-sm shadow-lg shadow-tertiary/20 hover:scale-105 active:scale-95 transition-all">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-2 flex justify-around items-center z-50">
+    <button onclick="navigateTo('dashboard')" class="flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="text-[10px]">Aperçu</span>
+    </button>
+    <button onclick="navigateTo('classes')" class="flex flex-col items-center p-2 text-primary font-bold">
+        <span class="material-symbols-outlined">groups</span>
+        <span class="text-[10px]">Classes</span>
+    </button>
+    <button onclick="navigateTo('devoirs')" class="flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">assignment</span>
+        <span class="text-[10px]">Devoirs</span>
+    </button>
+    <button onclick="navigateTo('stats')" class="flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">analytics</span>
+        <span class="text-[10px]">Stats</span>
+    </button>
+    <button onclick="openLogoutModal()" class="flex flex-col items-center p-2 text-tertiary">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="text-[10px]">Quitter</span>
+    </button>
+</nav>
+
+<script>
+    const sections = ['dashboard', 'classes', 'devoirs', 'stats'];
+    const titles = {
+        dashboard: 'Tableau de bord',
+        classes:   'Mes Classes',
+        devoirs:   'Gestion des Devoirs',
+        stats:     'Statistiques'
+    };
+
+    function navigateTo(target) {
+        sections.forEach(s => {
+            document.getElementById('section-' + s).classList.add('hidden');
+        });
+
+        sections.forEach(s => {
+            const btn = document.getElementById('nav-' + s);
+            btn.classList.remove('nav-card-active');
+            btn.classList.add('text-slate-400', 'hover:bg-slate-50');
+        });
+
+        document.getElementById('section-' + target).classList.remove('hidden');
+
+        const activeBtn = document.getElementById('nav-' + target);
+        activeBtn.classList.add('nav-card-active');
+        activeBtn.classList.remove('text-slate-400', 'hover:bg-slate-50');
+
+
+        document.getElementById('page-title').textContent = titles[target];
+
+        closeNotifMenu();
+    }
+
+    function toggleNotifMenu() {
+        const menu = document.getElementById('notifMenu');
+        menu.classList.toggle('hidden');
+    }
+    function closeNotifMenu() {
+        document.getElementById('notifMenu').classList.add('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+        const wrapper = document.getElementById('notif-wrapper');
+        if (wrapper && !wrapper.contains(e.target)) closeNotifMenu();
+    });
+
+    function openLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        const card = document.getElementById('logoutCard');
+        modal.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                card.classList.remove('opacity-0', 'scale-90');
+                card.classList.add('opacity-100', 'scale-100');
+            });
+        });
+    }
+
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        const card = document.getElementById('logoutCard');
+        card.classList.remove('opacity-100', 'scale-100');
+        card.classList.add('opacity-0', 'scale-90');
+        setTimeout(() => modal.classList.add('hidden'), 280);
+    }
+
+    function confirmLogout() {
+        const card = document.getElementById('logoutCard');
+        card.innerHTML = `
+            <div class="flex flex-col items-center gap-4 py-4">
+                <span class="material-symbols-outlined text-primary text-4xl animate-spin">autorenew</span>
+                <p class="font-body text-slate-500 text-sm">Déconnexion en cours...</p>
+            </div>`;
+        setTimeout(() => {
+            window.location.href = 'indexconnexion.html';
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
