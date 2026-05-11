@@ -30,11 +30,96 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         .hero-gradient { background: linear-gradient(135deg, #00602a 0%, #1a7a3c 100%); }
         .academic-gradient { background: linear-gradient(135deg, #59d655 0%, #1a7a3c 100%); }
         .tonal-elevation { box-shadow: 0px 12px 32px rgba(25, 28, 30, 0.08); }
         .strength-bar { transition: width 0.3s ease-in-out, background-color 0.3s shadow; }
+
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(145deg, #00602a, #ffffff, #f97316, #3b82f6);
+            background-size: 200% 200%;
+            animation: moveGradient 14s ease infinite alternate;
+        }
+        @keyframes moveGradient {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Vagues montantes (vert / blanc / orange / bleu) */
+        .wave-up {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .wave {
+            position: absolute;
+            bottom: -20%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: linear-gradient(0deg, rgba(0,96,42,0.2) 0%, rgba(249,115,22,0.15) 30%, rgba(59,130,246,0.15) 60%, rgba(255,255,255,0.1) 100%);
+            border-radius: 40% 60% 30% 70% / 50% 40% 60% 50%;
+            filter: blur(15px);
+            animation: riseWave 16s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .wave:nth-child(2) {
+            bottom: -25%;
+            width: 110%;
+            background: linear-gradient(0deg, rgba(59,130,246,0.25) 0%, rgba(0,96,42,0.2) 30%, rgba(249,115,22,0.15) 70%, rgba(255,255,255,0.08) 100%);
+            animation-duration: 20s;
+            animation-delay: -3s;
+            border-radius: 55% 45% 35% 65% / 45% 55% 45% 55%;
+        }
+        .wave:nth-child(3) {
+            bottom: -30%;
+            width: 120%;
+            background: linear-gradient(0deg, rgba(249,115,22,0.25) 0%, rgba(255,255,255,0.25) 30%, rgba(0,96,42,0.15) 60%, rgba(59,130,246,0.1) 100%);
+            animation-duration: 24s;
+            animation-delay: -7s;
+            border-radius: 65% 35% 45% 55% / 35% 65% 35% 65%;
+        }
+        @keyframes riseWave {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-40%) rotate(2deg); opacity: 0.7; }
+            100% { transform: translateY(-90%) rotate(-2deg); opacity: 0.1; }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkleStar 3s ease-in-out infinite, floatStar 8s linear infinite;
+        }
+        @keyframes twinkleStar {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.9; transform: scale(1); }
+        }
+        @keyframes floatStar {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-50px) translateX(20px); }
+        }
 
         .fade-up {
             opacity: 0;
@@ -47,7 +132,14 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden bg-[#f8f9fb]">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+    <div class="moving-bg"></div>
+    <div class="wave-up">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    <div class="stars" id="starsContainer"></div>
 
     <div class="fixed top-5 right-5 z-50">
         <button id="langToggle" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors text-sm font-medium text-on-surface">
@@ -56,14 +148,9 @@
         </button>
     </div>
 
-    <div class="fixed inset-0 -z-10">
-        <div class="absolute -top-24 -left-24 w-96 h-96 hero-gradient opacity-10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] hero-gradient opacity-10 rounded-full blur-3xl"></div>
-    </div>
-
-    <main class="flex-grow flex items-center justify-center px-4 py-16">
+    <main class="flex-grow flex items-center justify-center px-4 py-16 relative z-10">
         <div class="w-full max-w-lg">
-            <div class="bg-white rounded-2xl p-10 tonal-elevation border border-gray-100 flex flex-col gap-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-10 tonal-elevation border border-gray-100/50 flex flex-col gap-8">
                 
                 <div class="flex flex-col items-center text-center">
                     <div class="flex items-center gap-2 mb-6 fade-up">
@@ -71,7 +158,7 @@
                         <span class="font-headline font-extrabold text-2xl tracking-tight text-primary"><span class="text-on-surface">Camuno</span>Learn</span>
                     </div>
                     <div class="space-y-2">
-                        <h1 class="font-headline text-2xl font-bold text-on-surface tracking-tight text-gray-900 fade-up" data-i18n="signup_title">Créer un compte étudiant</h1>
+                        <h1 class="font-headline text-2xl font-bold text-on-surface tracking-tight text-gray-900 fade-up" data-i18n="signup_title">Créer un compte</h1>
                         <p class="font-body text-gray-500 text-sm fade-up" data-i18n="signup_subtitle">Accédez aux ressources académiques de Douala</p>
                     </div>
                 </div>
@@ -91,7 +178,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="email_label">Email académique</label>
+                        <label class="text-[0.7rem] font-bold uppercase tracking-widest text-gray-400 ml-1" data-i18n="email_label">Email</label>
                         <input class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-primary/20 transition-all" 
                                type="email" data-i18n-placeholder="email_placeholder" placeholder="nom@etudiant.cm" required/>
                     </div>
@@ -141,26 +228,44 @@
         </div>
     </main>
 
-    <footer class="w-full py-8 bg-white border-t border-gray-100 mt-auto">
+    <footer class="w-full py-8 bg-white/60 backdrop-blur-sm border-t border-gray-100 mt-auto relative z-10">
         <div class="max-w-7xl mx-auto px-8 flex justify-between items-center text-gray-400 text-xs font-medium">
-            <p data-i18n="footer_copyright">© 2026 CamunoLearn</p>
+            <p data-i18n="footer_copyright">© 2026 CamunoLearn — Douala</p>
             <div class="flex gap-6">
-                <a href="#" class="hover:text-primary" data-i18n="footer_support">Support</a>
-                <a href="#" class="hover:text-primary" data-i18n="footer_privacy">Confidentialité</a>
+                <a href="IndexAIDE.html" class="hover:text-primary" data-i18n="footer_support">Support</a>
+                <a href="indexConfidentialité.html" class="hover:text-primary" data-i18n="footer_privacy">Confidentialité</a>
             </div>
         </div>
     </footer>
 
     <script>
+        function generateStars() {
+            const container = document.getElementById('starsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const starCount = 80;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDuration = Math.random() * 4 + 2 + 's';
+                container.appendChild(star);
+            }
+        }
         const translations = {
             fr: {
-                signup_title: "Créer un compte étudiant",
+                signup_title: "Créer un compte",
                 signup_subtitle: "Accédez aux ressources académiques de Douala",
                 firstname_label: "Prénom",
                 firstname_placeholder: "Jean",
                 lastname_label: "Nom",
                 lastname_placeholder: "Ebanda",
-                email_label: "Email académique",
+                email_label: "Email",
                 email_placeholder: "nom@etudiant.cm",
                 password_label: "Mot de passe",
                 password_placeholder: "••••••••",
@@ -176,17 +281,18 @@
                 login_link: "Se connecter",
                 footer_copyright: "© 2026 CamunoLearn — Douala",
                 footer_support: "Support",
-                footer_privacy: "Confidentialité"
+                footer_privacy: "Confidentialité",
+                signup_loading: "Inscription..."
             },
             en: {
-                signup_title: "Create a student account",
+                signup_title: "Create a account",
                 signup_subtitle: "Access academic resources from Douala",
                 firstname_label: "First name",
                 firstname_placeholder: "John",
                 lastname_label: "Last name",
                 lastname_placeholder: "Doe",
-                email_label: "Academic email",
-                email_placeholder: "name@student.cm",
+                email_label: "Email",
+                email_placeholder: "name@university.cm",
                 password_label: "Password",
                 password_placeholder: "••••••••",
                 strength_short: "Strength: too short",
@@ -201,7 +307,8 @@
                 login_link: "Log in",
                 footer_copyright: "© 2026 CamunoLearn — Douala",
                 footer_support: "Support",
-                footer_privacy: "Privacy"
+                footer_privacy: "Privacy",
+                signup_loading: "Signing up..."
             }
         };
 
@@ -226,14 +333,7 @@
                 }
             });
 
-        
-            const strengthTextEl = document.getElementById('strengthText');
-            if (strengthTextEl && !strengthTextEl.hasAttribute('data-i18n-fixed')) {
-                
-                refreshStrengthMessage();
-            } else {
-                refreshStrengthMessage();
-            }
+            refreshStrengthMessage();
         }
 
         function refreshStrengthMessage() {
@@ -355,8 +455,7 @@
             });
             
             updateLanguage('fr');
-            translations.fr.signup_loading = "Inscription...";
-            translations.en.signup_loading = "Signing up...";
+            generateStars();
         });
     </script>
 </body>
