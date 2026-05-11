@@ -7,6 +7,8 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -103,6 +105,80 @@
         opacity: 1;
         transform: translateY(0);
     }
+@keyframes slideInRotate {
+    0% {
+        transform: translateX(-40%) rotate(-3deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+.carousel-slide-in {
+    animation: slideInRotate 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+    @media (max-width: 767px) {
+        .hero-main .hero-gradient {
+            background: transparent !important;
+        }
+        .hero-mobile-bg-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .hero-mobile-bg-slider .mobile-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .hero-mobile-bg-slider .mobile-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+        .hero-mobile-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 2;
+        }
+        .hero-main .hero-content {
+            position: relative;
+            z-index: 3;
+        }
+    }
+    .futuristic-btn {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .glowing-text {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.4);
+        animation: subtleGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes subtleGlow {
+        from {
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        to {
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+    }
 
     .star {
         position: absolute;
@@ -159,77 +235,99 @@
     
     <form action="resultats.html" method="GET" class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-full w-64 lg:w-80 border border-transparent focus-within:border-primary transition-all">
         <span class="material-symbols-outlined text-outline mr-2 text-sm">search</span>
-        <input name="q" class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Rechercher un cours..." type="text" data-i18n-placeholder="search_placeholder"/>
+        <input name="q" class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Rechercher..." type="text" data-i18n-placeholder="search_placeholder"/>
         <button type="submit" class="hidden"></button> 
     </form>
 
     <div class="flex items-center gap-4">
-        <button id="langToggle" class="flex items-center gap-1 px-3 py-2 rounded-full bg-surface-container-low hover:bg-surface-container-highest transition-colors text-sm font-medium text-on-surface">
+        <button id="langToggle" class="flex items-center gap-1 px-1 py-1 rounded-full bg-surface-container-low hover:bg-surface-container-highest transition-colors text-sm font-medium text-on-surface">
             <span class="material-symbols-outlined text-base">language</span>
             <span id="langLabel">FR</span>
         </button>
 
         <a href="indexconnexion.html" 
-           class="px-5 py-2 text-primary font-semibold hover:opacity-90 transition-opacity font-body text-sm inline-flex items-center justify-center gap-2">
+           class="px-1 py-1 text-primary font-semibold hover:opacity-90 transition-opacity font-body text-sm inline-flex items-center justify-center gap-2">
             <span class="material-symbols-outlined md:hidden">login</span>
             <span class="hidden md:inline" data-i18n="login">Se connecter</span>
         </a>
 
         <a href="indexInscription.html" 
-           class="inline-flex items-center justify-center gap-2 px-6 py-2 bg-primary text-white rounded-full font-semibold hover:opacity-90 transition-opacity scale-95 active:transition-transform font-body text-sm text-center">
+           class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-full font-semibold hover:opacity-90 transition-opacity scale-95 active:transition-transform font-body text-sm text-center">
             <span class="material-symbols-outlined md:hidden">person_add</span>
             <span class="hidden md:inline" data-i18n="signup">S'inscrire</span>
         </a>
     </div>
 </nav>
-<section class="pt-32 pb-20 hero-gradient relative overflow-hidden">
-<div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center relative z-10">
-<div class="space-y-8">
-<div class="space-y-4">
-<h1 class="text-5xl md:text-6xl font-headline font-extrabold text-white leading-tight tracking-tight fade-up" data-i18n="hero_title">
-                        Apprenez,<br/>Progressez,<br/>Réussissez.
-                    </h1>
-<p class="text-white/80 text-lg md:text-xl font-body max-w-lg leading-relaxed fade-up" data-i18n="hero_subtitle">
-                        La plateforme e-learning des universités camerounaises. Accédez à des centaines de cours, devoirs et ressources en ligne.
-                    </p>
-</div>
-<div class="flex flex-wrap gap-4 fade-up">
-<a href="indexInscription.html" class="inline-block px-8 py-4 bg-white text-primary rounded-full font-bold text-lg hover:bg-surface-container-low transition-colors ambient-shadow text-center" data-i18n="hero_cta_primary">Commencer Maintenant</a>
-<a href="coursPlatform.html" class="px-8 py-4 border-2 border-white/40 text-white rounded-full font-bold text-lg hover:bg-white/10 transition-colors" data-i18n="hero_cta_secondary">Découvrir les Cours</a>
-</div>
-<div class="flex gap-8 pt-4 fade-up">
-<div class="text-white">
-<p class="text-2xl font-bold font-headline" data-i18n="stat_courses_value">120+</p>
-<p class="text-sm text-white/60 font-body" data-i18n="stat_courses_label">Cours</p>
-</div>
-<div class="text-white">
-<p class="text-2xl font-bold font-headline" data-i18n="stat_students_value">5000+</p>
-<p class="text-sm text-white/60 font-body" data-i18n="stat_students_label">Étudiants</p>
-</div>
-<div class="text-white">
-<p class="text-2xl font-bold font-headline" data-i18n="stat_teachers_value">140+</p>
-<p class="text-sm text-white/60 font-body" data-i18n="stat_teachers_label">Professeurs</p>
-</div>
-</div>
-</div>
-<div class="relative hidden md:block">
-<div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm border border-white/20 transform rotate-2">
-<img alt="clean digital dashboard interface with progress charts, course lists and sidebar navigation" class="rounded-2g shadow-1xl w-full object-cover aspect-[4/3]" id="heroImg" src="image.png"/>
-</div>
-<div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg ambient-shadow flex items-center gap-3">
-<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">verified</span>
-</div>
-<div>
-<p class="text-sm font-bold font-headline text-primary" data-i18n="badge_title">Certification Académique</p>
-<p class="text-xs text-on-surface-variant font-body" data-i18n="badge_subtitle">Reconnu par l'État</p>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 skew-x-12 transform translate-x-1/2"></div>
+<section class="hero-main pt-32 pb-20 relative overflow-hidden">
+    <div class="hero-mobile-bg-slider md:hidden" id="mobileSliderContainer">
+        <div class="mobile-slide active" style="background-image: url('Images/Ecole1.jpg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/Etudiant1.jpg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/Ecole2.jpg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/Etudiant2.jpg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/Etudiant3.jpeg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/EtudiantUnivDouala.jpeg');"></div>
+        <div class="mobile-slide" style="background-image: url('Images/IMAGETUDIANT.jpg');"></div>
+        <div class="hero-mobile-overlay"></div>
+    </div>
+    <div class="hero-gradient absolute inset-0 -z-10 hidden md:block"></div>
+    
+    <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center relative z-10 hero-content">
+        <div class="space-y-8 text-center md:text-left">
+            <div class="space-y-4">
+                <!-- Ajout de la classe glowing-text pour l'effet brillant -->
+                <h1 data-i18n="hero_title" class="text-3xl md:text-4xl font-headline font-extrabold text-white leading-tight tracking-tight fade-up glowing-text">
+                    Apprenez,<br/>Progressez,<br/>Réussissez.
+                </h1>
+                <p class="text-white/90 text-md md:text-xl max-w-lg leading-relaxed fade-up mx-auto md:mx-0" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 300; letter-spacing: -0.01em;" data-i18n="hero_subtitle">
+   L'excellence académique à portée de main. Accédez au savoir des universités camerounaises à travers une bibliothèque numérique complète et interactive.
+</p>
+            </div>
+            <div class="flex flex-wrap gap-4 fade-up justify-center md:justify-start">
+                <!-- Boutons futuristes -->
+                <a href="indexInscription.html" class="futuristic-btn inline-block px-8 py-4 bg-white text-primary rounded-full font-bold text-lg hover:bg-surface-container-low transition-colors ambient-shadow text-center" data-i18n="hero_cta_primary">Commencer Maintenant</a>
+                <a href="coursPlatform.html" class="futuristic-btn px-8 py-4 border-2 border-white/40 text-white rounded-full font-bold text-lg hover:bg-white/10 transition-colors" data-i18n="hero_cta_secondary">Découvrir les Cours</a>
+            </div>
+            <div class="flex gap-8 pt-4 fade-up justify-center md:justify-start">
+                <div class="text-white">
+                    <p class="text-2xl font-bold font-headline" data-i18n="stat_courses_value">120+</p>
+                    <p class="text-sm text-white/60 font-body" data-i18n="stat_courses_label">Cours</p>
+                </div>
+                <div class="text-white">
+                    <p class="text-2xl font-bold font-headline" data-i18n="stat_students_value">5000+</p>
+                    <p class="text-sm text-white/60 font-body" data-i18n="stat_students_label">Étudiants</p>
+                </div>
+                <div class="text-white">
+                    <p class="text-2xl font-bold font-headline" data-i18n="stat_teachers_value">140+</p>
+                    <p class="text-sm text-white/60 font-body" data-i18n="stat_teachers_label">Professeurs</p>
+                </div>
+            </div>
+        </div>
+        <div class="relative hidden md:block">
+            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm border border-white/20 transform rotate-2">
+                <div class="relative w-full aspect-[4/3] overflow-hidden rounded-lg">
+                    <img id="heroImg" class="w-full h-full object-cover transition-opacity duration-700 ease-in-out" src="Images/Ecole1.jpg" alt="Campus universitaire">
+                    <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/50 transition-all duration-300 dot-indicator active"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/50 transition-all duration-300 dot-indicator"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/50 transition-all duration-300 dot-indicator"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/50 transition-all duration-300 dot-indicator"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/50 transition-all duration-300 dot-indicator"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg ambient-shadow flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">verified</span>
+                </div>
+                <div>
+                    <p class="text-sm font-bold font-headline text-primary" data-i18n="badge_title">Certification Académique</p>
+                    <p class="text-xs text-on-surface-variant font-body" data-i18n="badge_subtitle">Reconnu par l'État</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 skew-x-12 transform translate-x-1/2 hidden md:block"></div>
 </section>
-
 
 <section class="py-24 bg-white">
 <div class="max-w-7xl mx-auto px-8">
@@ -238,42 +336,10 @@
 <div class="w-20 h-1.5 bg-primary-container mx-auto rounded-full fade-up"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300">
-<div class="feature-card">
-<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">school</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature1_title">Cours en ligne</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature1_desc">Des contenus pédagogiques structurés, validés par les meilleurs professeurs universitaires.</p>
-</div>
-</div>
-<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300">
-<div class="feature-card">
-<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">quiz</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature2_title">Devoirs &amp; Quiz</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature2_desc">Évaluez vos connaissances en temps réel avec des tests interactifs et des corrections détaillées.</p>
-</div>
-</div>
-<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300">
-<div class="feature-card">
-<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">calendar_month</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature3_title">Emploi du temps</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature3_desc">Organisez votre apprentissage avec un calendrier personnalisé et des rappels intelligents.</p>
-</div>
-</div>
-<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300">
-<div class="feature-card">
-<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">groups</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature4_title">Communauté</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature4_desc">Échangez avec d'autres étudiants et collaborez sur des projets d'étude passionnants.</p>
-</div>
-</div>
+<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300"><div class="feature-card"><div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"><span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">school</span></div><h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature1_title">Cours en ligne</h3><p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature1_desc">Des contenus pédagogiques structurés, validés par les meilleurs professeurs universitaires.</p></div></div>
+<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300"><div class="feature-card"><div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"><span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">quiz</span></div><h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature2_title">Devoirs &amp; Quiz</h3><p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature2_desc">Évaluez vos connaissances en temps réel avec des tests interactifs et des corrections détaillées.</p></div></div>
+<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300"><div class="feature-card"><div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"><span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">calendar_month</span></div><h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature3_title">Emploi du temps</h3><p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature3_desc">Organisez votre apprentissage avec un calendrier personnalisé et des rappels intelligents.</p></div></div>
+<div class="group p-8 rounded-xl hover:bg-surface-container-low transition-all duration-300"><div class="feature-card"><div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"><span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">groups</span></div><h3 class="text-xl font-bold font-headline mb-3 text-on-surface" data-i18n="feature4_title">Communauté</h3><p class="text-on-surface-variant text-sm leading-relaxed font-body" data-i18n="feature4_desc">Échangez avec d'autres étudiants et collaborez sur des projets d'étude passionnants.</p></div></div>
 </div>
 </div>
 </section>
@@ -281,476 +347,248 @@
 <section class="py-24 bg-surface-container-low">
 <div class="max-w-7xl mx-auto px-8">
 <div class="flex justify-between items-end mb-12">
-<div>
-<h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface fade-up" data-i18n="courses_title">Cours Populaires</h2>
-<p class="text-on-surface-variant mt-2 font-body fade-up" data-i18n="courses_subtitle">Découvrez les modules les plus suivis ce semestre.</p>
-</div>
+<div><h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface fade-up" data-i18n="courses_title">Cours Populaires</h2><p class="text-on-surface-variant mt-2 font-body fade-up" data-i18n="courses_subtitle">Découvrez les modules les plus suivis ce semestre.</p></div>
 <button class="hidden md:block text-primary font-bold hover:underline font-body" data-i18n="courses_view_all">Tout voir</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full">
-<div class="relative h-48">
-<img alt="Dev Web" class="w-full h-full object-cover" src="https://potentiel-humain.eu/wp-content/uploads/2020/09/programming.jpg"/>
-<div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course1_level">L3 INFO</div>
-</div>
-<div class="p-6 flex-grow flex flex-col">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-primary text-sm">person</span>
-<span class="text-xs text-on-surface-variant font-medium font-body">Dr. Jean-Pierre N.</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course1_title">Développement Web Avancé</h3>
-<div class="mt-auto space-y-4">
-<div class="space-y-1">
-<div class="flex justify-between text-xs text-on-surface-variant font-body">
-<span data-i18n="progress_label">Progression</span>
-<span>85%</span>
-</div>
-<div class="w-full h-2 bg-surface-container-highest rounded-full">
-<div class="bg-primary h-full rounded-full" style="width: 85%"></div>
-</div>
-</div>
-<button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button>
-</div>
-</div>
-</div>
-
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full">
-<div class="relative h-48">
-<img alt="Algorithmes" class="w-full h-full object-cover" src="https://www.iut.unilim.fr/wp-content/uploads/sites/3/2021/03/GEII.jpg"/>
-<div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course2_level">L2 GEII</div>
-</div>
-<div class="p-6 flex-grow flex flex-col">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-primary text-sm">person</span>
-<span class="text-xs text-on-surface-variant font-medium font-body">Pr. Marie Ebanda</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course2_title">Algorithmique Avancée</h3>
-<div class="mt-auto space-y-4">
-<div class="space-y-1">
-<div class="flex justify-between text-xs text-on-surface-variant font-body">
-<span data-i18n="progress_label">Progression</span>
-<span>40%</span>
-</div>
-<div class="w-full h-2 bg-surface-container-highest rounded-full">
-<div class="bg-primary h-full rounded-full" style="width: 40%"></div>
-</div>
-</div>
-<button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button>
-</div>
-</div>
-</div>
-
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full">
-<div class="relative h-48">
-<img alt="SQL" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKE7P16hhsLydcaEzkD-l8UyKpo9HaGN579X5LSdFSSI8vjbW5KL0R9UeIYqDmqY9U6mlmPBfFyR7at7HSDC0JXv2O3PdB7CwFKJRMoTxumUaKa4s7SE0Rf8PAVgf2wIoXB9IJCaLKxHS8DOSn9csNgdiUknkzldDaDFnKFbGMXX7WaT-rW7SSnLyg5MGZjsMCjR1NR4m907JK5qqEW78xLorTt5_NrUE59_tcTYPpAfFIvIWEeI-iNyRkQ0gL0pHOBxEpi6LA2Xf3"/>
-<div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course3_level">L1 INFO</div>
-</div>
-<div class="p-6 flex-grow flex flex-col">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-primary text-sm">person</span>
-<span class="text-xs text-on-surface-variant font-medium font-body">Dr. Samuel Fouda</span>
-</div>
-<h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course3_title">Base de Données SQL</h3>
-<div class="mt-auto space-y-4">
-<div class="space-y-1">
-<div class="flex justify-between text-xs text-on-surface-variant font-body">
-<span data-i18n="progress_label">Progression</span>
-<span>15%</span>
-</div>
-<div class="w-full h-2 bg-surface-container-highest rounded-full">
-<div class="bg-primary h-full rounded-full" style="width: 15%"></div>
-</div>
-</div>
-<button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button>
-</div>
-</div>
-</div>
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full"><div class="relative h-48"><img alt="Dev Web" class="w-full h-full object-cover" src="https://potentiel-humain.eu/wp-content/uploads/2020/09/programming.jpg"/><div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course1_level">L3 INFO</div></div><div class="p-6 flex-grow flex flex-col"><div class="flex items-center gap-2 mb-3"><span class="material-symbols-outlined text-primary text-sm">person</span><span class="text-xs text-on-surface-variant font-medium font-body">Dr. Jean-Pierre N.</span></div><h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course1_title">Développement Web Avancé</h3><div class="mt-auto space-y-4"><div class="space-y-1"><div class="flex justify-between text-xs text-on-surface-variant font-body"><span data-i18n="progress_label">Progression</span><span>85%</span></div><div class="w-full h-2 bg-surface-container-highest rounded-full"><div class="bg-primary h-full rounded-full" style="width: 85%"></div></div></div><button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button></div></div></div>
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full"><div class="relative h-48"><img alt="Algorithmes" class="w-full h-full object-cover" src="https://www.iut.unilim.fr/wp-content/uploads/sites/3/2021/03/GEII.jpg"/><div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course2_level">L2 GEII</div></div><div class="p-6 flex-grow flex flex-col"><div class="flex items-center gap-2 mb-3"><span class="material-symbols-outlined text-primary text-sm">person</span><span class="text-xs text-on-surface-variant font-medium font-body">Pr. Marie Ebanda</span></div><h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course2_title">Algorithmique Avancée</h3><div class="mt-auto space-y-4"><div class="space-y-1"><div class="flex justify-between text-xs text-on-surface-variant font-body"><span data-i18n="progress_label">Progression</span><span>40%</span></div><div class="w-full h-2 bg-surface-container-highest rounded-full"><div class="bg-primary h-full rounded-full" style="width: 40%"></div></div></div><button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button></div></div></div>
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden ambient-shadow flex flex-col h-full"><div class="relative h-48"><img alt="SQL" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKE7P16hhsLydcaEzkD-l8UyKpo9HaGN579X5LSdFSSI8vjbW5KL0R9UeIYqDmqY9U6mlmPBfFyR7at7HSDC0JXv2O3PdB7CwFKJRMoTxumUaKa4s7SE0Rf8PAVgf2wIoXB9IJCaLKxHS8DOSn9csNgdiUknkzldDaDFnKFbGMXX7WaT-rW7SSnLyg5MGZjsMCjR1NR4m907JK5qqEW78xLorTt5_NrUE59_tcTYPpAfFIvIWEeI-iNyRkQ0gL0pHOBxEpi6LA2Xf3"/><div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-body" data-i18n="course3_level">L1 INFO</div></div><div class="p-6 flex-grow flex flex-col"><div class="flex items-center gap-2 mb-3"><span class="material-symbols-outlined text-primary text-sm">person</span><span class="text-xs text-on-surface-variant font-medium font-body">Dr. Samuel Fouda</span></div><h3 class="text-xl font-bold font-headline mb-4 text-on-surface" data-i18n="course3_title">Base de Données SQL</h3><div class="mt-auto space-y-4"><div class="space-y-1"><div class="flex justify-between text-xs text-on-surface-variant font-body"><span data-i18n="progress_label">Progression</span><span>15%</span></div><div class="w-full h-2 bg-surface-container-highest rounded-full"><div class="bg-primary h-full rounded-full" style="width: 15%"></div></div></div><button class="w-full py-3 bg-surface-container-high text-on-surface rounded-full font-bold hover:bg-primary hover:text-white transition-all font-body" data-i18n="view_course_btn">Voir le cours</button></div></div></div>
 </div>
 </div>
 </section>
-
 
 <section class="py-24 bg-white">
 <div class="max-w-7xl mx-auto px-8">
-<div class="text-center mb-20">
-<h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-4 fade-up" data-i18n="how_title">Comment ça marche ?</h2>
-<p class="text-on-surface-variant max-w-xl mx-auto font-body fade-up" data-i18n="how_subtitle">Trois étapes simples pour transformer votre avenir académique.</p>
-</div>
-<div class="relative flex flex-col md:flex-row justify-between items-center gap-12">
-<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-container-highest hidden md:block -z-10"></div>
-<div class="flex flex-col items-center text-center max-w-xs">
-<div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">1</div>
-<h3 class="font-headline font-bold text-xl mb-3" data-i18n="step1_title">Créez votre compte</h3>
-<p class="text-on-surface-variant text-sm font-body" data-i18n="step1_desc">Inscrivez-vous gratuitement avec votre adresse étudiante ou personnelle.</p>
-</div>
-<div class="flex flex-col items-center text-center max-w-xs">
-<div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">2</div>
-<h3 class="font-headline font-bold text-xl mb-3" data-i18n="step2_title">Rejoignez vos cours</h3>
-<p class="text-on-surface-variant text-sm font-body" data-i18n="step2_desc">Inscrivez-vous aux modules de votre faculté ou découvrez de nouveaux domaines.</p>
-</div>
-<div class="flex flex-col items-center text-center max-w-xs">
-<div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">3</div>
-<h3 class="font-headline font-bold text-xl mb-3" data-i18n="step3_title">Apprenez &amp; progressez</h3>
-<p class="text-on-surface-variant text-sm font-body" data-i18n="step3_desc">Suivez les cours à votre rythme et obtenez vos attestations de réussite.</p>
-</div>
+<div class="text-center mb-20"><h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-4 fade-up" data-i18n="how_title">Comment ça marche ?</h2><p class="text-on-surface-variant max-w-xl mx-auto font-body fade-up" data-i18n="how_subtitle">Trois étapes simples pour transformer votre avenir académique.</p></div>
+<div class="relative flex flex-col md:flex-row justify-between items-center gap-12"><div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-container-highest hidden md:block -z-10"></div>
+<div class="flex flex-col items-center text-center max-w-xs"><div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">1</div><h3 class="font-headline font-bold text-xl mb-3" data-i18n="step1_title">Créez votre compte</h3><p class="text-on-surface-variant text-sm font-body" data-i18n="step1_desc">Inscrivez-vous gratuitement avec votre adresse étudiante ou personnelle.</p></div>
+<div class="flex flex-col items-center text-center max-w-xs"><div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">2</div><h3 class="font-headline font-bold text-xl mb-3" data-i18n="step2_title">Rejoignez vos cours</h3><p class="text-on-surface-variant text-sm font-body" data-i18n="step2_desc">Inscrivez-vous aux modules de votre faculté ou découvrez de nouveaux domaines.</p></div>
+<div class="flex flex-col items-center text-center max-w-xs"><div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 ambient-shadow">3</div><h3 class="font-headline font-bold text-xl mb-3" data-i18n="step3_title">Apprenez &amp; progressez</h3><p class="text-on-surface-variant text-sm font-body" data-i18n="step3_desc">Suivez les cours à votre rythme et obtenez vos attestations de réussite.</p></div>
 </div>
 </div>
 </section>
-
 
 <section class="py-24 bg-surface-container-low overflow-hidden">
-    <div class="max-w-7xl mx-auto px-8 mb-12">
-        <div class="text-center">
-            <h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-4 fade-up" data-i18n="testimonials_title">Ce que disent nos étudiants</h2>
-            <div class="w-20 h-1.5 bg-primary-container mx-auto rounded-full fade-up"></div>
-        </div>
-    </div>
-
-    <div class="relative flex overflow-x-hidden group">
-        <div class="flex animate-scroll-right whitespace-nowrap gap-8 py-4 hover:[animation-play-state:paused]">
-            
-            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">ET</div>
-                    <div>
-                        <h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial1_name">Emma T.</h4>
-                        <p class="text-xs text-primary font-body" data-i18n="testimonial1_role">L2 Droit</p>
-                    </div>
-                </div>
-                <p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial1_text">"Grâce à CamunoLearn, j'ai pu rattraper mes cours de droit constitutionnel même quand je ne pouvais pas me déplacer à l'amphi."</p>
-            </div>
-            
-            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center font-bold text-green-600">MK</div>
-                    <div>
-                        <h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial2_name">Marc K.</h4>
-                        <p class="text-xs text-primary font-body" data-i18n="testimonial2_role">M1 Informatique</p>
-                    </div>
-                </div>
-                <p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial2_text">"Les quiz de préparation aux examens sont incroyablement proches des épreuves réelles. C'est l'outil indispensable."</p>
-            </div>
-            
-            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-600">AN</div>
-                    <div>
-                        <h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial3_name">Aïcha N.</h4>
-                        <p class="text-xs text-primary font-body" data-i18n="testimonial3_role">L3 Gestion</p>
-                    </div>
-                </div>
-                <p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial3_text">"La plateforme est fluide et les professeurs sont très réactifs dans les forums. Je recommande à 100%."</p>
-            </div>
-            
-            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-600">SD</div>
-                    <div>
-                        <h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial4_name">Samuel D.</h4>
-                        <p class="text-xs text-primary font-body" data-i18n="testimonial4_role">L1 Génie Civil</p>
-                    </div>
-                </div>
-                <p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial4_text">"Les schémas techniques en haute résolution m'aident énormément pour mes révisions en RDM."</p>
-            </div>
-            
-            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center font-bold text-red-600">LB</div>
-                    <div>
-                        <h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial5_name">Lucie B.</h4>
-                        <p class="text-xs text-primary font-body" data-i18n="testimonial5_role">M2 Marketing</p>
-                    </div>
-                </div>
-                <p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial5_text">"La certification obtenue après le cours de Marketing Digital a été un vrai plus sur mon CV pour mon stage."</p>
-            </div>
-            
+    <div class="max-w-7xl mx-auto px-8 mb-12"><div class="text-center"><h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-4 fade-up" data-i18n="testimonials_title">Ce que disent nos étudiants</h2><div class="w-20 h-1.5 bg-primary-container mx-auto rounded-full fade-up"></div></div></div>
+    <div class="relative flex overflow-x-hidden group"><div class="flex animate-scroll-right whitespace-nowrap gap-8 py-4 hover:[animation-play-state:paused]">
+            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0"><div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">ET</div><div><h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial1_name">Emma T.</h4><p class="text-xs text-primary font-body" data-i18n="testimonial1_role">L2 Droit</p></div></div><p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial1_text">"Grâce à CamunoLearn, j'ai pu rattraper mes cours de droit constitutionnel même quand je ne pouvais pas me déplacer à l'amphi."</p></div>
+            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0"><div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center font-bold text-green-600">MK</div><div><h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial2_name">Marc K.</h4><p class="text-xs text-primary font-body" data-i18n="testimonial2_role">M1 Informatique</p></div></div><p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial2_text">"Les quiz de préparation aux examens sont incroyablement proches des épreuves réelles. C'est l'outil indispensable."</p></div>
+            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0"><div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-600">AN</div><div><h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial3_name">Aïcha N.</h4><p class="text-xs text-primary font-body" data-i18n="testimonial3_role">L3 Gestion</p></div></div><p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial3_text">"La plateforme est fluide et les professeurs sont très réactifs dans les forums. Je recommande à 100%."</p></div>
+            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0"><div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-600">SD</div><div><h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial4_name">Samuel D.</h4><p class="text-xs text-primary font-body" data-i18n="testimonial4_role">L1 Génie Civil</p></div></div><p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial4_text">"Les schémas techniques en haute résolution m'aident énormément pour mes révisions en RDM."</p></div>
+            <div class="inline-block w-[350px] bg-white p-8 rounded-2xl ambient-shadow whitespace-normal shrink-0"><div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center font-bold text-red-600">LB</div><div><h4 class="font-bold font-headline text-on-surface" data-i18n="testimonial5_name">Lucie B.</h4><p class="text-xs text-primary font-body" data-i18n="testimonial5_role">M2 Marketing</p></div></div><p class="text-on-surface-variant italic font-body text-sm" data-i18n="testimonial5_text">"La certification obtenue après le cours de Marketing Digital a été un vrai plus sur mon CV pour mon stage."</p></div>
         </div>
     </div>
 </section>
-
 <style>
-    @keyframes scroll-left {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-scroll-right {
-        animation: scroll-left 40s linear infinite;
-    }
+@keyframes scroll-left { 
+0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }.animate-scroll-right { animation: scroll-left 40s linear infinite; }
 </style>
-
-<section class="py-16">
-  <div class="max-w-7xl mx-auto px-8">
-    <div class="hero-gradient rounded-3xl p-12 md:p-20 text-center relative overflow-hidden">
-      <div class="absolute inset-0 overflow-hidden pointer-events-none" id="starContainer">
-      </div>
-      <div class="relative z-10">
-        <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-white mb-8 fade-up" data-i18n="cta_title">Prêt à rejoindre CamunoLearn ?</h2>
-        <a href="indexconnexion.html" 
-           class="inline-block px-14 py-6 bg-white text-[#00602a] rounded-full font-bold hover:bg-opacity-90 transition-all cursor-pointer scale-100 hover:scale-105 active:scale-95 font-body text-lg shadow-xl fade-up" data-i18n="cta_button">
-           S'inscrire dès maintenant
-        </a>
-      </div>
-      <div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3"></div>
-    </div>
-  </div>
-</section>
+<section class="py-16"><div class="max-w-7xl mx-auto px-8"><div class="hero-gradient rounded-3xl p-12 md:p-20 text-center relative overflow-hidden"><div class="absolute inset-0 overflow-hidden pointer-events-none" id="starContainer"></div><div class="relative z-10"><h2 class="text-3xl md:text-5xl font-headline font-extrabold text-white mb-8 fade-up" data-i18n="cta_title">Prêt à rejoindre CamunoLearn ?</h2><a href="indexconnexion.html" class="inline-block px-14 py-6 bg-white text-[#00602a] rounded-full font-bold hover:bg-opacity-90 transition-all cursor-pointer scale-100 hover:scale-105 active:scale-95 font-body text-lg shadow-xl fade-up" data-i18n="cta_button">S'inscrire dès maintenant</a></div><div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div><div class="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3"></div></div></div></section>
 
 <footer class="w-full py-16 px-12 grid grid-cols-1 md:grid-cols-4 gap-12 bg-[#0F5C2E] dark:bg-[#08331a]">
-<div>
-<span class="text-xl font-bold text-white font-manrope mb-6 block">CamunoLearn</span>
-<p class="text-slate-300 text-sm font-body leading-relaxed max-w-xs" data-i18n="footer_description">L'excellence académique à portée de clic. La première plateforme d'apprentissage collaborative au Cameroun.</p>
-</div>
-<div>
-<h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_platform">Plateforme</h4>
-<ul class="space-y-4">
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_all_courses">Tous les cours</a></li>
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_teachers">Professeurs</a></li>
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="indexTarifs.html" data-i18n="footer_pricing">Tarifs</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_resources">Ressources</h4>
-<ul class="space-y-4">
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_blog">Blog</a></li>
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_library">Bibliothèque</a></li>
-<li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_support">Support</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_contact">Contact</h4>
-<ul class="space-y-4">
-<li class="text-slate-300 text-sm font-body" data-i18n="footer_address">Douala, Cameroun</li>
-<li class="text-slate-300 text-sm font-body">contact@camunolearn.cm</li>
-<li class="text-slate-300 text-sm font-body">+237 691929394</li>
-</ul>
-</div>
-<div class="col-span-1 md:col-span-4 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-<p class="text-slate-300 text-sm font-body" data-i18n="footer_copyright">© 2026 CamunoLearn — Tous droits réservés</p>
-<div class="flex gap-6">
-<a class="text-slate-300 hover:text-white font-body text-xs" href="indexConfidentialité.html" data-i18n="footer_privacy">Confidentialité</a>
-<a class="text-slate-300 hover:text-white font-body text-xs" href="#" data-i18n="footer_terms">Conditions</a>
-<a class="text-slate-300 hover:text-white font-body text-xs" href="indexCookies.html" data-i18n="footer_cookies">Cookies</a>
-</div>
-</div>
+<div><span class="text-xl font-bold text-white font-manrope mb-6 block">CamunoLearn</span><p class="text-slate-300 text-sm font-body leading-relaxed max-w-xs" data-i18n="footer_description">L'excellence académique à portée de clic. La première plateforme d'apprentissage collaborative au Cameroun.</p></div>
+<div><h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_platform">Plateforme</h4><ul class="space-y-4"><li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="coursPlatform.html" data-i18n="footer_all_courses">Tous les cours</a></li><li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="PROFESSEURS.html" data-i18n="footer_teachers">Professeurs</a></li><li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="indexTarifs.html" data-i18n="footer_pricing">Tarifs</a></li></ul></div>
+<div><h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_resources">Ressources</h4><ul class="space-y-4"><li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="#" data-i18n="footer_blog">Blog</a></li><li><a class="text-slate-300 hover:text-white transition-colors font-body text-sm" href="IndexAIDE.html" data-i18n="footer_support">Support</a></li></ul></div>
+<div><h4 class="font-manrope font-semibold text-white mb-6" data-i18n="footer_contact">Contact</h4><ul class="space-y-4"><li class="text-slate-300 text-sm font-body" data-i18n="footer_address">Douala, Cameroun</li><li class="text-slate-300 text-sm font-body">contact@camunolearn.cm</li><li class="text-slate-300 text-sm font-body">+237 691929394</li></ul></div>
+<div class="col-span-1 md:col-span-4 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6"><p class="text-slate-300 text-sm font-body" data-i18n="footer_copyright">© 2026 CamunoLearn — Tous droits réservés</p><div class="flex gap-6"><a class="text-slate-300 hover:text-white font-body text-xs" href="indexConfidentialité.html" data-i18n="footer_privacy">Confidentialité</a><a class="text-slate-300 hover:text-white font-body text-xs" href="indexCookies.html" data-i18n="footer_cookies">Cookies</a></div></div>
 </footer>
 
 <script>
+    const carouselImages = [
+        "Images/Ecole1.jpg",
+        "Images/Etudiant1.jpg",
+        "Images/Ecole2.jpg",
+        "Images/Etudiant2.jpg",
+        "Images/Etudiant3.jpeg",
+        "Images/EtudiantUnivDouala.jpeg",
+        "Images/IMAGETUDIANT.jpg"
+    ];
+    const altsList = [
+        "Campus universitaire moderne avec bâtiments académiques",
+        "Amphithéâtre rempli d'étudiants en cours",
+        "Bibliothèque universitaire et espace d'étude",
+        "Cérémonie de remise de diplômes et étudiants",
+        "École d'ingénieurs et laboratoire high-tech",
+        "Étudiants en groupe de travail collaboratif",
+        "Vue aérienne d'une université avec étudiants"
+    ];
+    let currentIndex = 0;
+    const heroImg = document.getElementById('heroImg');
+    const dots = document.querySelectorAll('.dot-indicator');
+    
+    function updateCarousel(index) {
+        if (!heroImg) return;
+        heroImg.classList.remove('carousel-slide-in');
+        void heroImg.offsetWidth;
+        heroImg.classList.add('carousel-slide-in');
+        setTimeout(() => {
+            heroImg.src = carouselImages[index];
+            heroImg.alt = altsList[index] || "Université ou école";
+        }, 50);
+        if (dots.length) {
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                    dot.style.backgroundColor = 'white';
+                    dot.style.width = '2rem';
+                } else {
+                    dot.classList.remove('active');
+                    dot.style.backgroundColor = 'rgba(255,255,255,0.5)';
+                    dot.style.width = '0.375rem';
+                }
+            });
+        }
+    }
+    
+    let intervalId = setInterval(() => {
+        currentIndex = (currentIndex + 1) % carouselImages.length;
+        updateCarousel(currentIndex);
+    }, 8000);
+    
+    const heroContainer = document.querySelector('.relative.hidden.md\\:block');
+    if (heroContainer) {
+        heroContainer.addEventListener('mouseenter', () => clearInterval(intervalId));
+        heroContainer.addEventListener('mouseleave', () => {
+            intervalId = setInterval(() => {
+                currentIndex = (currentIndex + 1) % carouselImages.length;
+                updateCarousel(currentIndex);
+            }, 7000);
+        });
+    }
+    updateCarousel(0);
+
+    let mobileSlides = document.querySelectorAll('.hero-mobile-bg-slider .mobile-slide');
+    let mobileCurrent = 0;
+    if (mobileSlides.length) {
+        setInterval(() => {
+            mobileSlides[mobileCurrent].classList.remove('active');
+            mobileCurrent = (mobileCurrent + 1) % mobileSlides.length;
+            mobileSlides[mobileCurrent].classList.add('active');
+        }, 7000);
+    }
     const translations = {
         fr: {
-            
-            login: "Se connecter",
-            signup: "S'inscrire",
-            search_placeholder: "Rechercher un cours...",
-            
             hero_title: "Apprenez,<br/>Progressez,<br/>Réussissez.",
+            login: "Se connecter", signup: "S'inscrire", search_placeholder: "Rechercher un cours...",
             hero_subtitle: "La plateforme e-learning des universités camerounaises. Accédez à des centaines de cours, devoirs et ressources en ligne.",
-            hero_cta_primary: "Commencer Maintenant",
-            hero_cta_secondary: "Découvrir les Cours",
-            stat_courses_value: "120+",
-            stat_courses_label: "Cours",
-            stat_students_value: "5000+",
-            stat_students_label: "Étudiants",
-            stat_teachers_value: "140+",
-            stat_teachers_label: "Professeurs",
-            badge_title: "Certification Académique",
-            badge_subtitle: "Reconnu par l'État",
-            
+            hero_cta_primary: "Commencer Maintenant", hero_cta_secondary: "Découvrir les Cours",
+            stat_courses_label: "Cours", stat_students_label: "Étudiants", stat_teachers_label: "Professeurs",
+            badge_title: "Certification Académique", badge_subtitle: "Reconnu par l'État",
             features_title: "Pourquoi choisir CamunoLearn ?",
-            feature1_title: "Cours en ligne",
-            feature1_desc: "Des contenus pédagogiques structurés, validés par les meilleurs professeurs universitaires.",
-            feature2_title: "Devoirs & Quiz",
-            feature2_desc: "Évaluez vos connaissances en temps réel avec des tests interactifs et des corrections détaillées.",
-            feature3_title: "Emploi du temps",
-            feature3_desc: "Organisez votre apprentissage avec un calendrier personnalisé et des rappels intelligents.",
-            feature4_title: "Communauté",
-            feature4_desc: "Échangez avec d'autres étudiants et collaborez sur des projets d'étude passionnants.",
-            
-            courses_title: "Cours Populaires",
-            courses_subtitle: "Découvrez les modules les plus suivis ce semestre.",
-            courses_view_all: "Tout voir",
-            course1_level: "L3 INFO",
-            course1_title: "Développement Web Avancé",
-            course2_level: "L2 GEII",
-            course2_title: "Algorithmique Avancée",
-            course3_level: "L1 INFO",
-            course3_title: "Base de Données SQL",
-            progress_label: "Progression",
-            view_course_btn: "Voir le cours",
-            
-            how_title: "Comment ça marche ?",
-            how_subtitle: "Trois étapes simples pour transformer votre avenir académique.",
-            step1_title: "Créez votre compte",
-            step1_desc: "Inscrivez-vous gratuitement avec votre adresse étudiante ou personnelle.",
-            step2_title: "Rejoignez vos cours",
-            step2_desc: "Inscrivez-vous aux modules de votre faculté ou découvrez de nouveaux domaines.",
-            step3_title: "Apprenez & progressez",
-            step3_desc: "Suivez les cours à votre rythme et obtenez vos attestations de réussite.",
-            
+            feature1_title: "Cours en ligne", feature1_desc: "Des contenus pédagogiques structurés, validés par les meilleurs professeurs universitaires.",
+            feature2_title: "Devoirs & Quiz", feature2_desc: "Évaluez vos connaissances en temps réel avec des tests interactifs et des corrections détaillées.",
+            feature3_title: "Emploi du temps", feature3_desc: "Organisez votre apprentissage avec un calendrier personnalisé et des rappels intelligents.",
+            feature4_title: "Communauté", feature4_desc: "Échangez avec d'autres étudiants et collaborez sur des projets d'étude passionnants.",
+            courses_title: "Cours Populaires", courses_subtitle: "Découvrez les modules les plus suivis ce semestre.", courses_view_all: "Tout voir",
+            course1_level: "L3 INFO", course1_title: "Développement Web Avancé", course2_level: "L2 GEII", course2_title: "Algorithmique Avancée",
+            course3_level: "L1 INFO", course3_title: "Base de Données SQL", progress_label: "Progression", view_course_btn: "Voir le cours",
+            how_title: "Comment ça marche ?", how_subtitle: "Trois étapes simples pour transformer votre avenir académique.",
+            step1_title: "Créez votre compte", step1_desc: "Inscrivez-vous gratuitement avec votre adresse étudiante ou personnelle.",
+            step2_title: "Rejoignez vos cours", step2_desc: "Inscrivez-vous aux modules de votre faculté ou découvrez de nouveaux domaines.",
+            step3_title: "Apprenez & progressez", step3_desc: "Suivez les cours à votre rythme et obtenez vos attestations de réussite.",
             testimonials_title: "Ce que disent nos étudiants",
-            testimonial1_name: "Emma T.",
-            testimonial1_role: "L2 Droit",
-            testimonial1_text: "Grâce à CamunoLearn, j'ai pu rattraper mes cours de droit constitutionnel même quand je ne pouvais pas me déplacer à l'amphi.",
-            testimonial2_name: "Marc K.",
-            testimonial2_role: "M1 Informatique",
-            testimonial2_text: "Les quiz de préparation aux examens sont incroyablement proches des épreuves réelles. C'est l'outil indispensable.",
-            testimonial3_name: "Aïcha N.",
-            testimonial3_role: "L3 Gestion",
-            testimonial3_text: "La plateforme est fluide et les professeurs sont très réactifs dans les forums. Je recommande à 100%.",
-            testimonial4_name: "Samuel D.",
-            testimonial4_role: "L1 Génie Civil",
-            testimonial4_text: "Les schémas techniques en haute résolution m'aident énormément pour mes révisions en RDM.",
-            testimonial5_name: "Lucie B.",
-            testimonial5_role: "M2 Marketing",
-            testimonial5_text: "La certification obtenue après le cours de Marketing Digital a été un vrai plus sur mon CV pour mon stage.",
-            
-            cta_title: "Prêt à rejoindre CamunoLearn ?",
-            cta_button: "S'inscrire dès maintenant",
-            
+            testimonial1_name: "Emma T.", testimonial1_role: "L2 Droit", testimonial1_text: "Grâce à CamunoLearn, j'ai pu rattraper mes cours de droit constitutionnel même quand je ne pouvais pas me déplacer à l'amphi.",
+            testimonial2_name: "Marc K.", testimonial2_role: "M1 Informatique", testimonial2_text: "Les quiz de préparation aux examens sont incroyablement proches des épreuves réelles. C'est l'outil indispensable.",
+            testimonial3_name: "Aïcha N.", testimonial3_role: "L3 Gestion", testimonial3_text: "La plateforme est fluide et les professeurs sont très réactifs dans les forums. Je recommande à 100%.",
+            testimonial4_name: "Samuel D.", testimonial4_role: "L1 Génie Civil", testimonial4_text: "Les schémas techniques en haute résolution m'aident énormément pour mes révisions en RDM.",
+            testimonial5_name: "Lucie B.", testimonial5_role: "M2 Marketing", testimonial5_text: "La certification obtenue après le cours de Marketing Digital a été un vrai plus sur mon CV pour mon stage.",
+            cta_title: "Prêt à rejoindre CamunoLearn ?", cta_button: "S'inscrire dès maintenant",
             footer_description: "L'excellence académique à portée de clic. La première plateforme d'apprentissage collaborative au Cameroun.",
-            footer_platform: "Plateforme",
-            footer_all_courses: "Tous les cours",
-            footer_teachers: "Professeurs",
-            footer_pricing: "Tarifs",
-            footer_resources: "Ressources",
-            footer_blog: "Blog",
-            footer_library: "Bibliothèque",
-            footer_support: "Support",
-            footer_contact: "Contact",
-            footer_address: "Douala, Cameroun",
-            footer_copyright: "© 2026 CamunoLearn — Tous droits réservés",
-            footer_privacy: "Confidentialité",
-            footer_terms: "Conditions",
-            footer_cookies: "Cookies"
+            footer_platform: "Plateforme", footer_all_courses: "Tous les cours", footer_teachers: "Professeurs", footer_pricing: "Tarifs",
+            footer_resources: "Ressources", footer_blog: "Blog", footer_library: "Bibliothèque", footer_support: "Support",
+            footer_contact: "Contact", footer_address: "Douala, Cameroun", footer_copyright: "© 2026 CamunoLearn — Tous droits réservés",
+            footer_privacy: "Confidentialité", footer_terms: "Conditions", footer_cookies: "Cookies"
         },
         en: {
-            login: "Log in",
-            signup: "Sign up",
-            search_placeholder: "Search for a course...",
             hero_title: "Learn,<br/>Grow,<br/>Succeed.",
+            login: "Log in", signup: "Sign up", search_placeholder: "Search for a course...",
             hero_subtitle: "The e-learning platform for Cameroonian universities. Access hundreds of courses, assignments, and online resources.",
-            hero_cta_primary: "Start Now",
-            hero_cta_secondary: "Discover Courses",
-            stat_courses_value: "120+",
-            stat_courses_label: "Courses",
-            stat_students_value: "5000+",
-            stat_students_label: "Students",
-            stat_teachers_value: "140+",
-            stat_teachers_label: "Teachers",
-            badge_title: "Academic Certification",
-            badge_subtitle: "State-recognized",
+            hero_cta_primary: "Start Now", hero_cta_secondary: "Discover Courses",
+            stat_courses_label: "Courses", stat_students_label: "Students", stat_teachers_label: "Teachers",
+            badge_title: "Academic Certification", badge_subtitle: "State-recognized",
             features_title: "Why choose CamunoLearn?",
-            feature1_title: "Online Courses",
-            feature1_desc: "Structured educational content validated by top university professors.",
-            feature2_title: "Assignments & Quizzes",
-            feature2_desc: "Evaluate your knowledge in real time with interactive tests and detailed feedback.",
-            feature3_title: "Timetable",
-            feature3_desc: "Organize your learning with a personalized calendar and smart reminders.",
-            feature4_title: "Community",
-            feature4_desc: "Connect with other students and collaborate on exciting study projects.",
-            courses_title: "Popular Courses",
-            courses_subtitle: "Discover the most followed modules this semester.",
-            courses_view_all: "View all",
-            course1_level: "CS Year 3",
-            course1_title: "Advanced Web Development",
-            course2_level: "EE Year 2",
-            course2_title: "Advanced Algorithms",
-            course3_level: "CS Year 1",
-            course3_title: "SQL Databases",
-            progress_label: "Progress",
-            view_course_btn: "View course",
-            how_title: "How it works?",
-            how_subtitle: "Three simple steps to transform your academic future.",
-            step1_title: "Create your account",
-            step1_desc: "Sign up for free with your student or personal email address.",
-            step2_title: "Join your courses",
-            step2_desc: "Enroll in your faculty modules or explore new fields.",
-            step3_title: "Learn & progress",
-            step3_desc: "Study at your own pace and earn your certificates of achievement.",
+            feature1_title: "Online Courses", feature1_desc: "Structured educational content validated by top university professors.",
+            feature2_title: "Assignments & Quizzes", feature2_desc: "Evaluate your knowledge in real time with interactive tests and detailed feedback.",
+            feature3_title: "Timetable", feature3_desc: "Organize your learning with a personalized calendar and smart reminders.",
+            feature4_title: "Community", feature4_desc: "Connect with other students and collaborate on exciting study projects.",
+            courses_title: "Popular Courses", courses_subtitle: "Discover the most followed modules this semester.", courses_view_all: "View all",
+            course1_level: "CS Year 3", course1_title: "Advanced Web Development", course2_level: "EE Year 2", course2_title: "Advanced Algorithms",
+            course3_level: "CS Year 1", course3_title: "SQL Databases", progress_label: "Progress", view_course_btn: "View course",
+            how_title: "How it works?", how_subtitle: "Three simple steps to transform your academic future.",
+            step1_title: "Create your account", step1_desc: "Sign up for free with your student or personal email address.",
+            step2_title: "Join your courses", step2_desc: "Enroll in your faculty modules or explore new fields.",
+            step3_title: "Learn & progress", step3_desc: "Study at your own pace and earn your certificates of achievement.",
             testimonials_title: "What our students say",
-            testimonial1_name: "Emma T.",
-            testimonial1_role: "Law Year 2",
-            testimonial1_text: "Thanks to CamunoLearn, I was able to catch up on my constitutional law classes even when I couldn't attend the lecture hall.",
-            testimonial2_name: "Marc K.",
-            testimonial2_role: "CS Master",
-            testimonial2_text: "The exam prep quizzes are incredibly close to the real exams. An essential tool.",
-            testimonial3_name: "Aïcha N.",
-            testimonial3_role: "Management Year 3",
-            testimonial3_text: "The platform is smooth and professors are very responsive on the forums. I recommend 100%.",
-            testimonial4_name: "Samuel D.",
-            testimonial4_role: "Civil Eng. Year 1",
-            testimonial4_text: "High-resolution technical diagrams greatly help me revise strength of materials.",
-            testimonial5_name: "Lucie B.",
-            testimonial5_role: "Marketing Master",
-            testimonial5_text: "The certification from the Digital Marketing course was a real plus on my CV for my internship.",
-            cta_title: "Ready to join CamunoLearn?",
-            cta_button: "Sign up now",
+            testimonial1_name: "Emma T.", testimonial1_role: "Law Year 2", testimonial1_text: "Thanks to CamunoLearn, I was able to catch up on my constitutional law classes even when I couldn't attend the lecture hall.",
+            testimonial2_name: "Marc K.", testimonial2_role: "CS Master", testimonial2_text: "The exam prep quizzes are incredibly close to the real exams. An essential tool.",
+            testimonial3_name: "Aïcha N.", testimonial3_role: "Management Year 3", testimonial3_text: "The platform is smooth and professors are very responsive on the forums. I recommend 100%.",
+            testimonial4_name: "Samuel D.", testimonial4_role: "Civil Eng. Year 1", testimonial4_text: "High-resolution technical diagrams greatly help me revise strength of materials.",
+            testimonial5_name: "Lucie B.", testimonial5_role: "Marketing Master", testimonial5_text: "The certification from the Digital Marketing course was a real plus on my CV for my internship.",
+            cta_title: "Ready to join CamunoLearn?", cta_button: "Sign up now",
             footer_description: "Academic excellence at your fingertips. The first collaborative learning platform in Cameroon.",
-            footer_platform: "Platform",
-            footer_all_courses: "All courses",
-            footer_teachers: "Teachers",
-            footer_pricing: "Pricing",
-            footer_resources: "Resources",
-            footer_blog: "Blog",
-            footer_library: "Library",
-            footer_support: "Support",
-            footer_contact: "Contact",
-            footer_address: "Douala, Cameroon",
-            footer_copyright: "© 2026 CamunoLearn — All rights reserved",
-            footer_privacy: "Privacy",
-            footer_terms: "Terms",
-            footer_cookies: "Cookies"
+            footer_platform: "Platform", footer_all_courses: "All courses", footer_teachers: "Teachers", footer_pricing: "Pricing",
+            footer_resources: "Resources", footer_blog: "Blog", footer_library: "Library", footer_support: "Support",
+            footer_contact: "Contact", footer_address: "Douala, Cameroon", footer_copyright: "© 2026 CamunoLearn — All rights reserved",
+            footer_privacy: "Privacy", footer_terms: "Terms", footer_cookies: "Cookies"
         }
     };
 
     let currentLang = 'fr';
-
+    function colorTitleFirstLetters() {
+        const titleEl = document.querySelector('h1[data-i18n="hero_title"]');
+        if (!titleEl) return;
+        const lines = titleEl.innerHTML.split('<br/>');
+        if (lines.length === 3) {
+            const coloredLines = lines.map((line, idx) => {
+                if (line.trim().length === 0) return line;
+                let firstChar = line.charAt(0);
+                let rest = line.slice(1);
+                let colorClass = '';
+                if (idx === 0) colorClass = 'first-letter-first';
+                else if (idx === 1) colorClass = 'first-letter-second';
+                else colorClass = 'first-letter-third';
+                return `<span class="${colorClass}">${firstChar}</span>${rest}`;
+            });
+            titleEl.innerHTML = coloredLines.join('<br/>');
+        } else {
+            let text = titleEl.innerText;
+            if (text.length > 0) {
+                let first = text[0];
+                let rest = text.slice(1);
+                titleEl.innerHTML = `<span class="first-letter-first">${first}</span>${rest}`;
+            }
+        }
+    }
     function updateLanguage(lang) {
         currentLang = lang;
         document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
         document.getElementById('langLabel').innerText = lang.toUpperCase();
-
-       
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (translations[lang][key]) {
-                if (el.tagName === 'INPUT' && el.getAttribute('data-i18n-placeholder')) {
-                    el.placeholder = translations[lang][key];
-                } else {
-                    el.innerHTML = translations[lang][key];
-                }
+                if (el.tagName === 'INPUT' && el.getAttribute('data-i18n-placeholder')) el.placeholder = translations[lang][key];
+                else el.innerHTML = translations[lang][key];
             }
         });
-
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
-            if (translations[lang][key]) {
-                el.placeholder = translations[lang][key];
-            }
+            if (translations[lang][key]) el.placeholder = translations[lang][key];
         });
-
-        const heroImg = document.getElementById('heroImg');
-        if (heroImg) {
-            heroImg.alt = lang === 'fr' 
-                ? "interface tableau de bord numérique avec graphiques de progression, listes de cours et navigation latérale"
-                : "digital dashboard interface with progress charts, course lists and sidebar navigation";
+        colorTitleFirstLetters();
+        if (heroImg && carouselImages[currentIndex]) {
+            heroImg.alt = lang === 'fr' ? altsList[currentIndex] + " (université)" : altsList[currentIndex] + " (university)";
         }
     }
-
-    const toggleBtn = document.getElementById('langToggle');
-    toggleBtn.addEventListener('click', () => {
-        const newLang = currentLang === 'fr' ? 'en' : 'fr';
-        updateLanguage(newLang);
+    document.getElementById('langToggle').addEventListener('click', () => {
+        updateLanguage(currentLang === 'fr' ? 'en' : 'fr');
     });
-
     function generateStars() {
         const container = document.getElementById('starContainer');
         if (!container) return;
-
         container.innerHTML = '';
-        const starCount = 60;
-        for (let i = 0; i < starCount; i++) {
+        for (let i = 0; i < 60; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
             const size = Math.random() * 3 + 1;
@@ -762,9 +600,7 @@
             star.style.animationDuration = Math.random() * 3 + 2 + 's';
             container.appendChild(star);
         }
-
-        const shootingStarCount = 8;
-        for (let i = 0; i < shootingStarCount; i++) {
+        for (let i = 0; i < 8; i++) {
             const shooting = document.createElement('div');
             shooting.classList.add('star-shooting');
             shooting.style.left = Math.random() * 80 + 10 + '%';
@@ -774,9 +610,7 @@
             container.appendChild(shooting);
         }
     }
-    
     document.addEventListener('DOMContentLoaded', () => {
-        
         const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
@@ -787,7 +621,6 @@
             });
         }, observerOptions);
         document.querySelectorAll('.feature-card').forEach((card) => observer.observe(card));
-
         const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
@@ -797,15 +630,13 @@
             });
         }, { threshold: 0.15 });
         document.querySelectorAll('.fade-up').forEach((el) => fadeObserver.observe(el));
-
-        document.querySelectorAll('.hero-gradient .fade-up').forEach((el, i) => {
+        document.querySelectorAll('.hero-main .fade-up').forEach((el, i) => {
             setTimeout(() => el.classList.add('show'), 200 + i * 180);
         });
-
-        
         updateLanguage('fr');
-
         generateStars();
+        if (heroImg) heroImg.style.opacity = '1';
+        colorTitleFirstLetters();
     });
 </script>
 </body>
