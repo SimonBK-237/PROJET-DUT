@@ -33,7 +33,6 @@
         .role-card:hover { transform: translateY(-5px); border-color: #00602a; background-color: #f0fdf4; }
         .role-card.selected { border-color: #00602a; background-color: #f0fdf4; box-shadow: 0 10px 15px -3px rgba(0, 96, 42, 0.1); }
         
-        /* Animation fade-up */
         .fade-up {
             opacity: 0;
             transform: translateY(28px);
@@ -43,11 +42,26 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .halo-student {
+            background: radial-gradient(circle at 30% 40%, rgba(0, 150, 50, 0.25), rgba(0, 0, 0, 0.02) 70%);
+        }
+        .halo-teacher {
+            background: radial-gradient(circle at 30% 40%, rgba(255, 165, 0, 0.25), rgba(0, 0, 0, 0.02) 70%);
+        }
+        .halo-admin {
+            background: radial-gradient(circle at 30% 40%, rgba(0, 100, 200, 0.25), rgba(0, 0, 0, 0.02) 70%);
+        }
+        .halo-default {
+            background: radial-gradient(circle at 30% 40%, rgba(0, 96, 42, 0.1), rgba(0, 0, 0, 0.02) 70%);
+        }
+        .transition-halo {
+            transition: background 0.4s ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-    <!-- Language Switcher (floating button top right) -->
     <div class="fixed top-5 right-5 z-50">
         <button id="langToggle" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors text-sm font-medium text-on-surface">
             <span class="material-symbols-outlined text-base">language</span>
@@ -55,9 +69,7 @@
         </button>
     </div>
 
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div class="absolute -top-24 -left-24 w-96 h-96 hero-gradient opacity-5 rounded-full blur-3xl"></div>
-    </div>
+    <div id="bgHalo" class="fixed inset-0 -z-10 transition-halo halo-default"></div>
 
     <main class="flex-grow flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-3xl">
@@ -143,16 +155,76 @@
         let currentLang = 'fr';
         let selectedRole = "";
 
+        const bgHalo = document.getElementById('bgHalo');
+
+        function setHaloColor(role) {
+            if (!bgHalo) return;
+            bgHalo.classList.remove('halo-student', 'halo-teacher', 'halo-admin', 'halo-default');
+            switch (role) {
+                case 'student':
+                    bgHalo.classList.add('halo-student');
+                    break;
+                case 'teacher':
+                    bgHalo.classList.add('halo-teacher');
+                    break;
+                case 'admin':
+                    bgHalo.classList.add('halo-admin');
+                    break;
+                default:
+                    bgHalo.classList.add('halo-default');
+            }
+        }
+
+        function selectRole(element, role) {
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            element.classList.add('selected');
+            selectedRole = role;
+
+            localStorage.setItem('userProfile', role);
+
+            setHaloColor(role);
+
+            const btn = document.getElementById('nextBtn');
+            btn.disabled = false;
+            btn.classList.remove('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
+            btn.classList.add('hero-gradient', 'text-white', 'shadow-lg', 'shadow-primary/20', 'hover:opacity-95');
+
+            btn.onclick = () => {
+                window.location.href = "indexSélectionEcole.html";
+            };
+        }
+
+        function restoreSelectedRole() {
+            const savedRole = localStorage.getItem('userProfile');
+            if (savedRole && (savedRole === 'student' || savedRole === 'teacher' || savedRole === 'admin')) {
+                let targetCard = null;
+                document.querySelectorAll('.role-card').forEach(card => {
+                    if (card.getAttribute('data-role') === savedRole) {
+                        targetCard = card;
+                    }
+                });
+                if (targetCard) {
+                    selectRole(targetCard, savedRole);
+                } else {
+                    // Par défaut, halo neutre
+                    setHaloColor(null);
+                }
+            } else {
+                setHaloColor(null);
+            }
+        }
+
         function updateLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
             document.getElementById('langLabel').innerText = lang.toUpperCase();
 
-
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) {
-
                     if (el.id === 'nextBtn') {
                         const iconSpan = el.querySelector('.material-symbols-outlined');
                         el.innerHTML = translations[lang][key] + ' ';
@@ -170,50 +242,11 @@
             updateLanguage(newLang);
         });
 
-        function selectRole(element, role) {
-            document.querySelectorAll('.role-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-
-            element.classList.add('selected');
-            selectedRole = role;
-
-            
-            localStorage.setItem('userProfile', role);
-
-            const btn = document.getElementById('nextBtn');
-            btn.disabled = false;
-            btn.classList.remove('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
-            btn.classList.add('hero-gradient', 'text-white', 'shadow-lg', 'shadow-primary/20', 'hover:opacity-95');
-
-            
-            btn.onclick = () => {
-                window.location.href = "indexSélectionEcole.html";
-            };
-        }
-
-        
-        function restoreSelectedRole() {
-            const savedRole = localStorage.getItem('userProfile');
-            if (savedRole && (savedRole === 'student' || savedRole === 'teacher' || savedRole === 'admin')) {
-                let targetCard = null;
-                document.querySelectorAll('.role-card').forEach(card => {
-                    if (card.getAttribute('data-role') === savedRole) {
-                        targetCard = card;
-                    }
-                });
-                if (targetCard) {
-                    selectRole(targetCard, savedRole);
-                }
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.fade-up').forEach((el, i) => {
                 setTimeout(() => el.classList.add('show'), 150 + i * 160);
             });
             updateLanguage('fr');
-        
             restoreSelectedRole();
         });
     </script>
