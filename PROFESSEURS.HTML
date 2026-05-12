@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Nos professeurs - CamunoLearn</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00602a",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#3f493f",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-highest": "#e0e3e5",
+                        "background": "#f8f9fb",
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fb; color: #191c1e; }
+        .hero-gradient { background: linear-gradient(135deg, #00602a 0%, #1a7a3c 100%); }
+        .ambient-shadow { box-shadow: 0 8px 32px rgba(25, 28, 30, 0.06); }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 h-20 flex justify-between items-center px-6 md:px-12 z-50">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">school</span>
+            <span class="text-2xl font-extrabold tracking-tight text-primary font-headline"><span class="text-on-surface">Camuno</span>Learn</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="indexconnexion.html" class="px-5 py-2 text-primary font-semibold hover:opacity-90 font-body text-sm hidden md:inline-flex">Se connecter</a>
+            <a href="indexInscription.html" class="px-6 py-2 bg-primary text-white rounded-full font-semibold hover:opacity-90 font-body text-sm hidden md:inline-block">S'inscrire</a>
+            <a href="indexAccueilPLATEFORME.html" class="text-slate-500 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">home</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12 fade-up">
+                <span class="material-symbols-outlined text-primary text-6xl mb-4">groups</span>
+                <h1 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface">Nos professeurs</h1>
+                <p class="text-on-surface-variant text-lg mt-2 max-w-2xl mx-auto">Des enseignants d'exception pour vous accompagner.</p>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full mt-6"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl ambient-shadow border border-gray-100 p-10 text-center fade-up">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-4xl">construction</span>
+                    </div>
+                    <h2 class="text-2xl font-headline font-bold text-on-surface">Liste des professeurs à venir</h2>
+                    <p class="text-on-surface-variant max-w-md">
+                        Nous travaillons actuellement à rassembler l’ensemble des corps enseignants. 
+                        La liste complète sera disponible prochainement.
+                    </p>
+                    <div class="mt-4 flex gap-4">
+                        <a href="indexAccueilPLATEFORME.html" class="px-6 py-2 bg-primary text-white rounded-full font-semibold hover:bg-primary/90 transition">
+                            Retour à l'accueil
+                        </a>
+                        <a href="indexAIDE.html" class="px-6 py-2 border border-gray-300 text-on-surface rounded-full font-semibold hover:bg-gray-50 transition">
+                            Contacter le support
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mt-16">
+                <div class="bg-white p-6 rounded-xl ambient-shadow text-center fade-up">
+                    <span class="material-symbols-outlined text-primary text-4xl">school</span>
+                    <h3 class="font-headline font-bold text-xl mt-3">Hautes compétences</h3>
+                    <p class="text-on-surface-variant text-sm mt-2">Tous nos enseignants sont sélectionnés pour leur excellence académique et pédagogique.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl ambient-shadow text-center fade-up">
+                    <span class="material-symbols-outlined text-primary text-4xl">handshake</span>
+                    <h3 class="font-headline font-bold text-xl mt-3">Accompagnement personnalisé</h3>
+                    <p class="text-on-surface-variant text-sm mt-2">Disponibles via les forums, les classes virtuelles et les sessions de tutorat.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl ambient-shadow text-center fade-up">
+                    <span class="material-symbols-outlined text-primary text-4xl">verified</span>
+                    <h3 class="font-headline font-bold text-xl mt-3">Certifiés et reconnus</h3>
+                    <p class="text-on-surface-variant text-sm mt-2">Tous les professeurs sont agréés par les institutions académiques camerounaises.</p>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center fade-up">
+                <p class="text-slate-400 text-sm">Vous souhaitez rejoindre notre corps professoral ? <a href="IndexAIDE.html" class="text-primary font-semibold">Contactez-nous</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-12 px-8 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-400 text-sm">© 2026 CamunoLearn — Tous droits réservés</p>
+            <div class="flex gap-6">
+                <a href="#" class="text-slate-400 hover:text-primary text-xs">Mentions légales</a>
+                <a href="indexConfidentialité.html" class="text-slate-400 hover:text-primary text-xs">Confidentialité</a>
+                <a href="indexAIDE.html" class="text-slate-400 hover:text-primary text-xs">Aide</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const fadeElements = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        fadeElements.forEach(el => observer.observe(el));
+
+        window.addEventListener('load', () => {
+            fadeElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('show');
+                    observer.unobserve(el);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
