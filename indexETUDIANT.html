@@ -126,12 +126,9 @@
                     <button onclick="navigateTo('profile'); closeUserMenu();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50 text-left">
                         <span class="material-symbols-outlined text-lg">person</span> Mon Profil
                     </button>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50">
-                        <span class="material-symbols-outlined text-lg">settings</span> Paramètres
-                    </a>
-                    <div class="border-t border-gray-50 my-2"></div>
+                    <div class="border-t border-gray-50 my-1"></div>
                     <button onclick="closeUserMenu(); openLogoutModal();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-tertiary font-bold hover:bg-red-50">
-                        <span class="material-symbols-outlined text-lg">logout</span> Déconnexion
+                        <span class="material-symbols-outlined text-lg">logout</span> Se Déconnecter
                     </button>
                 </div>
             </div>
@@ -152,21 +149,21 @@
                         <span class="material-symbols-outlined">menu_book</span>
                     </div>
                     <p class="text-sm font-bold text-slate-400 uppercase">Cours suivis</p>
-                    <p class="text-3xl font-black">12</p>
+                    <p class="text-3xl font-black">0</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                     <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-4">
                         <span class="material-symbols-outlined">assignment_late</span>
                     </div>
                     <p class="text-sm font-bold text-slate-400 uppercase">Devoirs à rendre</p>
-                    <p class="text-3xl font-black">04</p>
+                    <p class="text-3xl font-black">0</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-1">
                     <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-4">
                         <span class="material-symbols-outlined">workspace_premium</span>
                     </div>
                     <p class="text-sm font-bold text-slate-400 uppercase">Moyenne Semestrielle</p>
-                    <p class="text-3xl font-black">14.85</p>
+                    <p class="text-3xl font-black">—</p>
                 </div>
             </div>
 
@@ -176,25 +173,8 @@
                     <button data-nav="courses" class="text-primary text-sm font-bold hover:underline">Voir tout</button>
                 </div>
                 <div class="space-y-4">
-                    <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
-                        <div class="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                            <span class="material-symbols-outlined">menu_book</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h4 class="font-bold text-sm">Automatisme Industriel - Chap 2</h4>
-                            <p class="text-xs text-slate-400">Posté hier par Dr. Tagne</p>
-                        </div>
-                        <button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">download</button>
-                    </div>
-                    <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
-                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-                            <span class="material-symbols-outlined">slideshow</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h4 class="font-bold text-sm">Bases de Données SQL - Intro</h4>
-                            <p class="text-xs text-slate-400">Posté lundi par Pr. Ebanda</p>
-                        </div>
-                        <button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">download</button>
+                    <div class="text-center py-8 text-slate-400 text-sm">
+                        Aucun support pour le moment.
                     </div>
                 </div>
             </div>
@@ -206,53 +186,9 @@
                 <p class="text-on-surface-variant font-medium">Reprenez votre apprentissage là où vous l'avez laissé.</p>
             </section>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                    <div class="h-32 bg-gradient-to-r from-primary to-primary-container relative">
-                        <div class="absolute inset-0 opacity-20 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-8xl text-white mix-blend-overlay">memory</span>
-                        </div>
-                        <span class="absolute top-4 right-4 bg-white/20 text-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold">GEII</span>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Dr. Tagne Jean</p>
-                        <h3 class="text-xl font-bold mb-4">Automatisme Industriel</h3>
-                        <div class="mt-auto space-y-4">
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-500">
-                                    <span>Progression</span>
-                                    <span class="text-primary">65%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-primary h-full w-[65%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <button class="w-full py-3 bg-primary/10 text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-colors">Reprendre le cours</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                    <div class="h-32 bg-gradient-to-r from-blue-600 to-blue-400 relative">
-                        <div class="absolute inset-0 opacity-20 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-8xl text-white mix-blend-overlay">database</span>
-                        </div>
-                        <span class="absolute top-4 right-4 bg-white/20 text-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold">INFO</span>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Pr. Marie Ebanda</p>
-                        <h3 class="text-xl font-bold mb-4">Bases de Données Avancées</h3>
-                        <div class="mt-auto space-y-4">
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-500">
-                                    <span>Progression</span>
-                                    <span class="text-blue-600">30%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-full w-[30%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <button class="w-full py-3 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-colors">Reprendre le cours</button>
-                        </div>
-                    </div>
+                <div class="col-span-full text-center py-12 bg-white rounded-3xl border border-gray-100">
+                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">auto_stories</span>
+                    <p class="text-slate-500">Aucun cours pour le moment.</p>
                 </div>
             </div>
         </div>
@@ -270,40 +206,10 @@
                 </div>
             </div>
             <div id="communitiesList" class="space-y-6">
-                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Automatisme Industriel" data-description="Automatisme, grafcet, API, capteurs" data-members="124">
-                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">forum</span> Groupe — Automatisme Industriel</h3><p class="text-sm text-slate-500 mt-1">124 membres · 15 discussions actives</p></div>
-                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
-                    </div>
-                    <p class="text-slate-600 text-sm">Dernier message : "Quelqu'un a-t-il compris le schéma du grafcet ?" - Il y a 2 heures</p>
-                </div>
-                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Club Python & Data" data-description="Python,数据分析, machine learning, data science" data-members="89">
-                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">code_blocks</span> Club Python & Data</h3><p class="text-sm text-slate-500 mt-1">89 membres · 8 discussions actives</p></div>
-                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
-                    </div>
-                    <p class="text-slate-600 text-sm">Dernier message : "Projet de fin de semestre : application de gestion de notes" - Il y a 1 jour</p>
-                </div>
-                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Forum Génie Électrique" data-description="Génie électrique, électronique, convertisseurs, circuits" data-members="210">
-                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">psychology</span> Forum Génie Électrique</h3><p class="text-sm text-slate-500 mt-1">210 membres · 32 discussions actives</p></div>
-                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
-                    </div>
-                    <p class="text-slate-600 text-sm">Dernier message : "Cours de convertisseurs statiques - exercice corrigé disponible" - Il y a 5 heures</p>
-                </div>
-                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Mathématiques Supérieures" data-description="Algèbre, analyse, probabilités, statistiques" data-members="156">
-                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">calculate</span> Mathématiques Supérieures</h3><p class="text-sm text-slate-500 mt-1">156 membres · 22 discussions actives</p></div>
-                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
-                    </div>
-                    <p class="text-slate-600 text-sm">Dernier message : "Exercice corrigé : intégrales doubles" - Il y a 3 jours</p>
-                </div>
-                <div class="community-card bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all" data-name="Droit des Affaires Cameroun" data-description="OHADA, droit commercial, contrats" data-members="98">
-                    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div><h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">gavel</span> Droit des Affaires Cameroun</h3><p class="text-sm text-slate-500 mt-1">98 membres · 12 discussions actives</p></div>
-                        <button class="px-5 py-2 bg-primary/10 text-primary font-bold rounded-full text-sm hover:bg-primary hover:text-white transition">Rejoindre</button>
-                    </div>
-                    <p class="text-slate-600 text-sm">Dernier message : "Cas pratique sur la vente commerciale" - Il y a 2 jours</p>
+                <div class="text-center py-12 bg-white rounded-3xl border border-gray-100">
+                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">groups</span>
+                    <p class="text-slate-500">Aucune communauté disponible pour le moment.</p>
+                    <p class="text-sm text-slate-400 mt-1">Revenez plus tard.</p>
                 </div>
             </div>
             <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-3xl border border-gray-100">
@@ -327,17 +233,9 @@
             </section>
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                 <div class="divide-y divide-gray-100">
-                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center"><span class="material-symbols-outlined">timer</span></div><div><h3 class="font-bold">Automatisme Industriel - TD n°3</h3><p class="text-xs text-slate-400">À rendre le 15 mai 2026 - Dr. Tagne</p></div></div>
-                        <div class="flex items-center gap-3"><span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold">Urgent</span><button class="text-sm text-primary font-bold hover:underline">Voir détails</button></div>
-                    </div>
-                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined">assignment</span></div><div><h3 class="font-bold">Base de Données - Modélisation MERISE</h3><p class="text-xs text-slate-400">À rendre le 22 mai 2026 - Pr. Ebanda</p></div></div>
-                        <div><button class="text-sm text-primary font-bold hover:underline">Voir détails</button></div>
-                    </div>
-                    <div class="p-6 flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center"><span class="material-symbols-outlined">check_circle</span></div><div><h3 class="font-bold">Algorithmique - Projet fil rouge</h3><p class="text-xs text-slate-400">Rendu le 05 avril 2026 (corrigé disponible)</p></div></div>
-                        <div><span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">Corrigé ✅</span></div>
+                    <div class="p-8 text-center text-slate-500">
+                        <span class="material-symbols-outlined text-3xl text-slate-300 mb-2">assignment</span>
+                        <p>Aucun devoir pour le moment.</p>
                     </div>
                 </div>
             </div>
@@ -364,7 +262,7 @@
                             <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Filière</label><p class="text-slate-800 font-medium">Génie Électrique (L2)</p></div>
                             <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Université</label><p class="text-slate-800 font-medium">IUT de Douala - Université de Douala</p></div>
                             <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Téléphone</label><p class="text-slate-800 font-medium">+237 6XX XXX XXX</p></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Moyenne générale</label><p class="text-slate-800 font-medium">14.85 / 20</p></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Moyenne générale</label><p class="text-slate-800 font-medium">—</p></div>
                         </div>
                     </div>
                 </div>
@@ -448,14 +346,19 @@
             let hasVisible = false;
             const term = searchTerm.toLowerCase().trim();
             cards.forEach(card => {
-                const name = card.getAttribute('data-name')?.toLowerCase() || '';
-                const description = card.getAttribute('data-description')?.toLowerCase() || '';
-                const members = card.getAttribute('data-members') || '';
-                if (term === '' || name.includes(term) || description.includes(term) || members.includes(term)) {
+                if (term === '') {
                     card.style.display = '';
-                    hasVisible = true;
+                    if (card.style.display !== 'none') hasVisible = true;
                 } else {
-                    card.style.display = 'none';
+                    const name = card.getAttribute('data-name')?.toLowerCase() || '';
+                    const description = card.getAttribute('data-description')?.toLowerCase() || '';
+                    const members = card.getAttribute('data-members') || '';
+                    if (name.includes(term) || description.includes(term) || members.includes(term)) {
+                        card.style.display = '';
+                        hasVisible = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
                 }
             });
             if (noResultsMessage) {
