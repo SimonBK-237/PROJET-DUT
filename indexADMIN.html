@@ -8,201 +8,492 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "primary": "#00602a",
-                    "on-surface": "#191c1e",
-                    "on-surface-variant": "#3f493f",
-                    "background": "#f8f9fb",
-                    "surface": "#ffffff",
-                    "tertiary": "#a90111",
-                    "admin-blue": "#004a77"
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004a77",
+                        "primary-light": "#eef2ff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#3f493f",
+                        "background": "#f8f9fb",
+                        "surface": "#ffffff",
+                        "tertiary": "#a90111"
+                    },
+                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"] }
+                },
             },
-            "fontFamily": { "headline": ["Manrope"], "body": ["Inter"] }
-          },
-        },
-      }
+        }
     </script>
     <style>
-      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-      
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      .animate-reveal {
-        opacity: 0;
-        animation: fadeInUp 0.8s ease-out forwards;
-      }
-
-      .delay-1 { animation-delay: 0.2s; }
-      .delay-2 { animation-delay: 0.4s; }
-      .delay-3 { animation-delay: 0.6s; }
-
-      .dropdown-active { display: block !important; animation: fadeIn 0.2s ease-out; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .dropdown-active { display: block !important; animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-reveal { opacity: 0; animation: fadeInUp 0.8s ease-out forwards; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .mobile-nav-btn { transition: all 0.2s ease; }
+        .mobile-nav-active { color: #004a77; font-weight: 700; }
+        .mobile-nav-active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
     </style>
-    <script>
-        (function() {
-            const userRole = localStorage.getItem('userRole');
-           
-            if (!userRole || userRole !== 'admin') {
-                window.location.href = 'indexconnexion.html?error=unauthorized';
-            }
-        })();
-    </script>
 </head>
-<body class="bg-background text-on-surface font-body">
+<body class="bg-background text-on-surface font-body pb-20 md:pb-0">
 
 <aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 z-50 p-6">
     <div class="flex items-center gap-2 mb-10">
-        <span class="material-symbols-outlined text-admin-blue text-3xl" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
-        <span class="text-xl font-black tracking-tight text-admin-blue font-headline">Camuno<span class="text-on-surface">Learn</span></span>
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+        <span class="text-xl font-black tracking-tight text-primary font-headline">Camuno<span class="text-on-surface">Learn</span></span>
     </div>
     <nav class="flex flex-col gap-2 flex-grow">
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-admin-blue font-bold">
+        <button data-nav="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all">
             <span class="material-symbols-outlined">analytics</span>
             <span>Supervision</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+        </button>
+        <button data-nav="users" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
             <span class="material-symbols-outlined">person_add</span>
             <span>Utilisateurs</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+        </button>
+        <button data-nav="filieres" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
             <span class="material-symbols-outlined">account_tree</span>
             <span>Filières</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-colors">
+        </button>
+        <button data-nav="reports" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all">
             <span class="material-symbols-outlined">description</span>
             <span>Rapports</span>
-        </a>
+        </button>
     </nav>
     <div class="border-t pt-6">
-        <a href="indexconnexion.html" class="flex items-center gap-3 px-4 py-3 text-tertiary font-bold hover:bg-red-50 rounded-xl transition-colors">
+        <button onclick="openLogoutModal()" class="w-full flex items-center gap-3 px-4 py-3 text-tertiary font-bold hover:bg-red-50 rounded-xl transition-colors">
             <span class="material-symbols-outlined">logout</span>
             <span>Déconnexion</span>
-        </a>
+        </button>
     </div>
 </aside>
 
 <header class="fixed top-0 right-0 left-0 md:left-64 h-20 bg-white/80 backdrop-blur-md border-b border-gray-50 z-40 px-6 flex justify-between items-center">
-    <h2 class="font-headline font-bold text-lg text-slate-700">Portail Administratif</h2>
-    
+    <h2 id="page-title" class="font-headline font-bold text-lg text-slate-700">Supervision</h2>
     <div class="flex items-center gap-4">
-        <div class="relative">
-            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full ring-2 ring-admin-blue p-0.5 overflow-hidden transition-transform active:scale-95">
-                <img src="https://ui-avatars.com/api/?name=Admin+Camuno&background=004a77&color=fff" class="w-full h-full rounded-full object-cover" alt="Profile">
+        <div class="relative" id="user-avatar-wrapper">
+            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full ring-2 ring-primary p-0.5 overflow-hidden transition-transform active:scale-95">
+                <img src="https://ui-avatars.com/api/?name=Ecole+Camuno&background=004a77&color=fff" class="w-full h-full rounded-full object-cover" alt="Profile">
             </button>
             <div id="userMenu" class="hidden absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
-                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50">
-                    <span class="material-symbols-outlined text-lg">manage_accounts</span> Profil Admin
-                </a>
+                <button onclick="navigateTo('profile'); closeUserMenu();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-gray-50 text-left">
+                    <span class="material-symbols-outlined text-lg">business</span> Mon Établissement
+                </button>
                 <div class="border-t border-gray-50 my-2"></div>
-                <a href="indexconnexion.html" onclick="localStorage.removeItem('userRole');" class="flex items-center gap-3 px-4 py-2 text-sm text-tertiary font-bold hover:bg-red-50">
+                <button onclick="closeUserMenu(); openLogoutModal();" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-tertiary font-bold hover:bg-red-50">
                     <span class="material-symbols-outlined text-lg">logout</span> Déconnexion
-                </a>
+                </button>
             </div>
         </div>
     </div>
 </header>
 
-<main class="pt-24 pb-24 md:ml-64 px-6 min-h-screen">
-    <div class="max-w-6xl mx-auto">
+<main class="pt-24 pb-24 md:pb-10 md:ml-64 px-6 min-h-screen">
+    <div id="section-dashboard" class="max-w-6xl mx-auto animate-reveal">
         <header class="mb-10">
-            <h1 class="text-4xl font-black mb-2 animate-reveal">Tableau de bord de Gestion</h1>
-            <p class="text-on-surface-variant font-medium animate-reveal delay-1">Bienvenue sur l'interface de contrôle de CamunoLearn.</p>
+            <h1 class="text-4xl font-black mb-2">Tableau de bord de Gestion</h1>
+            <p class="text-on-surface-variant font-medium">Bienvenue sur l'interface de contrôle de CamunoLearn.</p>
         </header>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 animate-reveal delay-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                 <p class="text-xs font-bold text-slate-400 uppercase mb-2">Étudiants Inscrits</p>
-                <p class="text-3xl font-black text-admin-blue">2,450</p>
+                <p class="text-3xl font-black text-primary" id="stats-etudiants">0</p>
             </div>
             <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                 <p class="text-xs font-bold text-slate-400 uppercase mb-2">Professeurs Actifs</p>
-                <p class="text-3xl font-black text-admin-blue">124</p>
+                <p class="text-3xl font-black text-primary" id="stats-professeurs">0</p>
             </div>
             <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Filières (GEII, etc)</p>
-                <p class="text-3xl font-black text-admin-blue">08</p>
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Filières</p>
+                <p class="text-3xl font-black text-primary" id="stats-filieres">0</p>
             </div>
             <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Nouveaux Inscrits</p>
-                <p class="text-3xl font-black text-green-600">+12</p>
+                <p class="text-xs font-bold text-slate-400 uppercase mb-2">Nouveaux inscrits (mois)</p>
+                <p class="text-3xl font-black text-green-600" id="stats-nouveaux">0</p>
             </div>
         </div>
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+            <h3 class="font-bold text-lg mb-4">Activité récente</h3>
+            <div id="recentActivity" class="space-y-3 text-sm text-slate-500">
+                <p>Aucune activité récente.</p>
+            </div>
+        </div>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-reveal delay-3">
-            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-admin-blue">person_search</span>
-                    Gestion des comptes
-                </h3>
-                <div class="space-y-4">
-                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
-                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Inscrire un nouvel étudiant</span>
-                        <span class="material-symbols-outlined">add_circle</span>
-                    </button>
-                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
-                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Ajouter un professeur</span>
-                        <span class="material-symbols-outlined">person_add_alt_1</span>
-                    </button>
-                    <button class="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all group">
-                        <span class="font-bold text-slate-600 group-hover:text-admin-blue">Liste complète des utilisateurs</span>
-                        <span class="material-symbols-outlined">list_alt</span>
-                    </button>
+    <div id="section-users" class="hidden max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-black mb-2">Gestion des Utilisateurs</h1>
+                <p class="text-on-surface-variant font-medium">Inscrivez, modifiez ou supprimez des enseignants et étudiants.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="openUserModal('etudiant')" class="px-5 py-2 bg-primary text-white rounded-full text-sm font-bold shadow-md hover:bg-primary/90 transition">+ Étudiant</button>
+                <button onclick="openUserModal('enseignant')" class="px-5 py-2 bg-primary/10 text-primary rounded-full text-sm font-bold hover:bg-primary/20 transition">+ Enseignant</button>
+            </div>
+        </div>
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+            <div class="border-b border-gray-100 px-6 py-4 bg-gray-50/50">
+                <h3 class="font-bold text-primary">Liste des étudiants</h3>
+            </div>
+            <div id="studentsList" class="divide-y divide-gray-100">
+                <div class="p-6 text-center text-slate-400">Aucun étudiant inscrit.</div>
+            </div>
+        </div>
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="border-b border-gray-100 px-6 py-4 bg-gray-50/50">
+                <h3 class="font-bold text-primary">Liste des enseignants</h3>
+            </div>
+            <div id="teachersList" class="divide-y divide-gray-100">
+                <div class="p-6 text-center text-slate-400">Aucun enseignant enregistré.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-filieres" class="hidden max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-black mb-2">Filières</h1>
+                <p class="text-on-surface-variant font-medium">Gérez les départements et filières de l'établissement.</p>
+            </div>
+            <button onclick="openFiliereModal()" class="px-5 py-2 bg-primary text-white rounded-full text-sm font-bold shadow-md hover:bg-primary/90 transition">+ Nouvelle filière</button>
+        </div>
+        <div id="filieresList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-full text-center py-12 bg-white rounded-3xl border border-gray-100 text-slate-400">Aucune filière définie.</div>
+        </div>
+    </div>
+
+    <div id="section-reports" class="hidden max-w-6xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-black mb-2">Rapports & Analyses</h1>
+            <p class="text-on-surface-variant font-medium">Synthèse des données de la plateforme.</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">bar_chart</span> Statistiques générales</h3>
+                <div class="space-y-3 text-sm" id="reportStats">
+                    <p>Total étudiants : <span id="reportEtudiants">0</span></p>
+                    <p>Total enseignants : <span id="reportEnseignants">0</span></p>
+                    <p>Nombre de filières : <span id="reportFilieres">0</span></p>
+                </div>
+                <button onclick="generateFullReport()" class="mt-6 w-full py-2 border border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition">Générer un rapport complet (simulation)</button>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">download</span> Exporter</h3>
+                <p class="text-sm text-slate-500 mb-4">Exportez les données au format CSV pour analyse externe.</p>
+                <button onclick="exportData()" class="w-full py-2 bg-primary/10 text-primary rounded-full font-bold hover:bg-primary/20 transition">Exporter en CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-profile" class="hidden max-w-4xl mx-auto">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="material-symbols-outlined text-5xl text-primary">business</span>
+                    <div>
+                        <h1 class="text-3xl font-black">Institut Universitaire de Technologie de Douala</h1>
+                        <p class="text-on-surface-variant">Établissement d'enseignement supérieur</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Nom officiel</label><p class="font-medium">IUT de Douala - Université de Douala</p></div>
+                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Code établissement</label><p class="font-medium">CM-IUT-001</p></div>
+                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Téléphone</label><p class="font-medium">+237 6XX XXX XXX</p></div>
+                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Email</label><p class="font-medium">contact@iut-douala.cm</p></div>
+                    <div class="md:col-span-2"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Adresse</label><p class="font-medium">B.P. 8698, Douala, Cameroun</p></div>
                 </div>
             </div>
-
-            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-admin-blue">monitoring</span>
-                    Analyse & Rapports
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
-                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">cloud_download</span>
-                        <p class="text-xs font-bold text-slate-600">Stats Filières</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
-                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">history_edu</span>
-                        <p class="text-xs font-bold text-slate-600">Rapports Examens</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
-                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">assignment_ind</span>
-                        <p class="text-xs font-bold text-slate-600">Audit Comptes</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center hover:shadow-inner transition-shadow">
-                        <span class="material-symbols-outlined text-3xl text-admin-blue mb-2">settings_suggest</span>
-                        <p class="text-xs font-bold text-slate-600">Config Systèmes</p>
-                    </div>
-                </div>
+            <div class="bg-gray-50 px-8 py-5 flex flex-wrap justify-end gap-3">
+                <button class="px-6 py-2 border border-gray-300 rounded-full text-sm font-semibold text-slate-600 hover:bg-white transition">Annuler</button>
+                <button class="px-6 py-2 bg-primary text-white rounded-full text-sm font-bold hover:bg-primary/90 transition">Enregistrer les modifications</button>
             </div>
         </div>
     </div>
 </main>
 
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-2 flex justify-around items-center z-50">
+    <button data-nav="dashboard" class="mobile-nav-btn flex flex-col items-center p-2 text-primary">
+        <span class="material-symbols-outlined">analytics</span>
+        <span class="text-[10px] font-bold">Supervision</span>
+    </button>
+    <button data-nav="users" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">person_add</span>
+        <span class="text-[10px] font-bold">Utilisateurs</span>
+    </button>
+    <button data-nav="filieres" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">account_tree</span>
+        <span class="text-[10px] font-bold">Filières</span>
+    </button>
+    <button data-nav="reports" class="mobile-nav-btn flex flex-col items-center p-2 text-slate-400">
+        <span class="material-symbols-outlined">description</span>
+        <span class="text-[10px] font-bold">Rapports</span>
+    </button>
+    <button onclick="openLogoutModal()" class="flex flex-col items-center p-2 text-tertiary">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="text-[10px] font-bold">Quitter</span>
+    </button>
+</nav>
+
+<div id="userModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl">
+        <h3 class="text-xl font-black mb-4" id="userModalTitle">Ajouter un étudiant</h3>
+        <input type="hidden" id="userType">
+        <div class="mb-4"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Nom complet</label><input id="userFullname" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" placeholder="Ex: Jean Dupont"></div>
+        <div class="mb-4"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Email</label><input id="userEmail" type="email" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" placeholder="email@exemple.com"></div>
+        <div class="mb-4"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Filière (optionnel)</label><select id="userFiliere" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm"><option value="">Sélectionner</option></select></div>
+        <div class="flex gap-3 mt-2">
+            <button onclick="closeUserModal()" class="flex-1 py-3 border border-gray-200 rounded-xl font-bold text-sm">Annuler</button>
+            <button id="saveUserBtn" class="flex-1 py-3 bg-primary text-white rounded-xl font-bold text-sm">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<div id="filiereModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl">
+        <h3 class="text-xl font-black mb-4">Nouvelle filière</h3>
+        <input type="hidden" id="editFiliereId">
+        <div class="mb-4"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Nom de la filière</label><input id="filiereName" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" placeholder="Ex: Génie Électrique"></div>
+        <div class="mb-4"><label class="block text-xs font-bold uppercase text-slate-400 mb-1">Code</label><input id="filiereCode" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" placeholder="Ex: GEII"></div>
+        <div class="flex gap-3 mt-2">
+            <button onclick="closeFiliereModal()" class="flex-1 py-3 border border-gray-200 rounded-xl font-bold text-sm">Annuler</button>
+            <button id="saveFiliereBtn" class="flex-1 py-3 bg-primary text-white rounded-xl font-bold text-sm">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<div id="logoutModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="closeLogoutModal()"></div>
+    <div id="logoutCard" class="relative w-full max-w-sm bg-white rounded-[2.5rem] p-8 shadow-2xl transition-all duration-300 opacity-0 scale-90">
+        <div class="flex flex-col items-center text-center">
+            <div class="w-16 h-16 bg-red-50 text-tertiary rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-4xl">logout</span>
+            </div>
+            <h3 class="text-2xl font-black mb-2 font-headline">Déconnexion</h3>
+            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Êtes-vous sûr de vouloir quitter l'espace administration ?</p>
+            <div class="flex gap-3 w-full">
+                <button onclick="closeLogoutModal()" class="flex-1 py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-100 transition-all">Annuler</button>
+                <button onclick="confirmLogout()" class="flex-1 py-4 bg-tertiary text-white rounded-2xl font-bold text-sm shadow-lg shadow-tertiary/20 hover:scale-105 active:scale-95 transition-all">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    function toggleUserMenu() {
-        const menu = document.getElementById('userMenu');
-        menu.classList.toggle('hidden');
-        menu.classList.toggle('dropdown-active');
+    let etudiants = [];
+    let enseignants = [];
+    let filieres = [];
+
+    function loadData() {
+        const storedEtudiants = localStorage.getItem('admin_etudiants');
+        const storedEnseignants = localStorage.getItem('admin_enseignants');
+        const storedFilieres = localStorage.getItem('admin_filieres');
+        etudiants = storedEtudiants ? JSON.parse(storedEtudiants) : [];
+        enseignants = storedEnseignants ? JSON.parse(storedEnseignants) : [];
+        filieres = storedFilieres ? JSON.parse(storedFilieres) : [];
+    }
+    function saveAll() {
+        localStorage.setItem('admin_etudiants', JSON.stringify(etudiants));
+        localStorage.setItem('admin_enseignants', JSON.stringify(enseignants));
+        localStorage.setItem('admin_filieres', JSON.stringify(filieres));
+        refreshUI();
     }
 
-    window.onclick = function(event) {
-        if (!event.target.closest('.relative')) {
-            const menu = document.getElementById('userMenu');
-            if (menu && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-                menu.classList.remove('dropdown-active');
-            }
+    function refreshUI() {
+        document.getElementById('stats-etudiants').innerText = etudiants.length;
+        document.getElementById('stats-professeurs').innerText = enseignants.length;
+        document.getElementById('stats-filieres').innerText = filieres.length;
+        document.getElementById('stats-nouveaux').innerText = "0"; // fictif
+        document.getElementById('reportEtudiants').innerText = etudiants.length;
+        document.getElementById('reportEnseignants').innerText = enseignants.length;
+        document.getElementById('reportFilieres').innerText = filieres.length;
+
+        const studentsContainer = document.getElementById('studentsList');
+        if (etudiants.length === 0) studentsContainer.innerHTML = '<div class="p-6 text-center text-slate-400">Aucun étudiant inscrit.</div>';
+        else {
+            studentsContainer.innerHTML = etudiants.map(e => `
+                <div class="flex justify-between items-center p-4 hover:bg-gray-50 transition">
+                    <div><p class="font-bold">${escapeHtml(e.name)}</p><p class="text-xs text-slate-500">${e.email} | ${e.filiere || 'Sans filière'}</p></div>
+                    <button onclick="deleteUser('etudiant', ${e.id})" class="text-tertiary hover:bg-red-50 p-2 rounded-full"><span class="material-symbols-outlined text-sm">delete</span></button>
+                </div>
+            `).join('');
+        }
+        const teachersContainer = document.getElementById('teachersList');
+        if (enseignants.length === 0) teachersContainer.innerHTML = '<div class="p-6 text-center text-slate-400">Aucun enseignant enregistré.</div>';
+        else {
+            teachersContainer.innerHTML = enseignants.map(p => `
+                <div class="flex justify-between items-center p-4 hover:bg-gray-50 transition">
+                    <div><p class="font-bold">${escapeHtml(p.name)}</p><p class="text-xs text-slate-500">${p.email}</p></div>
+                    <button onclick="deleteUser('enseignant', ${p.id})" class="text-tertiary hover:bg-red-50 p-2 rounded-full"><span class="material-symbols-outlined text-sm">delete</span></button>
+                </div>
+            `).join('');
+        }
+
+        const filieresContainer = document.getElementById('filieresList');
+        if (filieres.length === 0) filieresContainer.innerHTML = '<div class="col-span-full text-center py-12 bg-white rounded-3xl border border-gray-100 text-slate-400">Aucune filière définie.</div>';
+        else {
+            filieresContainer.innerHTML = filieres.map(f => `
+                <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="flex justify-between items-start"><div><h3 class="font-bold text-lg">${escapeHtml(f.name)}</h3><p class="text-sm text-slate-500">Code: ${escapeHtml(f.code)}</p></div>
+                    <button onclick="deleteFiliere(${f.id})" class="text-tertiary"><span class="material-symbols-outlined">delete</span></button></div>
+                </div>
+            `).join('');
+        }
+
+        const filiereSelect = document.getElementById('userFiliere');
+        if (filiereSelect) {
+            filiereSelect.innerHTML = '<option value="">Sélectionner</option>' + filieres.map(f => `<option value="${escapeHtml(f.name)}">${escapeHtml(f.name)}</option>`).join('');
         }
     }
-</script>
 
+    let currentUserType = null;
+    function openUserModal(type) {
+        currentUserType = type;
+        document.getElementById('userModalTitle').innerText = type === 'etudiant' ? 'Ajouter un étudiant' : 'Ajouter un enseignant';
+        document.getElementById('userType').value = type;
+        document.getElementById('userFullname').value = '';
+        document.getElementById('userEmail').value = '';
+        document.getElementById('userFiliere').value = '';
+        document.getElementById('userModal').classList.remove('hidden');
+    }
+    function closeUserModal() { document.getElementById('userModal').classList.add('hidden'); }
+    function saveUser() {
+        const fullname = document.getElementById('userFullname').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const filiere = document.getElementById('userFiliere').value;
+        if (!fullname || !email) { alert("Veuillez remplir tous les champs"); return; }
+        const newId = Date.now();
+        if (currentUserType === 'etudiant') {
+            etudiants.push({ id: newId, name: fullname, email, filiere });
+        } else {
+            enseignants.push({ id: newId, name: fullname, email });
+        }
+        saveAll();
+        closeUserModal();
+        addActivity(`Ajout d'un ${currentUserType === 'etudiant' ? 'étudiant' : 'enseignant'} : ${fullname}`);
+    }
+    function deleteUser(type, id) {
+        if (type === 'etudiant') etudiants = etudiants.filter(e => e.id !== id);
+        else enseignants = enseignants.filter(e => e.id !== id);
+        saveAll();
+        addActivity(`Suppression d'un ${type === 'etudiant' ? 'étudiant' : 'enseignant'}`);
+    }
+
+    let editFiliereId = null;
+    function openFiliereModal(f = null) {
+        if (f) { editFiliereId = f.id; document.getElementById('filiereName').value = f.name; document.getElementById('filiereCode').value = f.code; }
+        else { editFiliereId = null; document.getElementById('filiereName').value = ''; document.getElementById('filiereCode').value = ''; }
+        document.getElementById('filiereModal').classList.remove('hidden');
+    }
+    function closeFiliereModal() { document.getElementById('filiereModal').classList.add('hidden'); }
+    function saveFiliere() {
+        const name = document.getElementById('filiereName').value.trim();
+        const code = document.getElementById('filiereCode').value.trim();
+        if (!name || !code) { alert("Veuillez remplir tous les champs"); return; }
+        if (editFiliereId) {
+            const index = filieres.findIndex(f => f.id === editFiliereId);
+            if (index !== -1) filieres[index] = { ...filieres[index], name, code };
+        } else {
+            filieres.push({ id: Date.now(), name, code });
+        }
+        saveAll();
+        closeFiliereModal();
+        addActivity(editFiliereId ? `Modification de la filière ${name}` : `Ajout de la filière ${name}`);
+    }
+    function deleteFiliere(id) {
+        if (confirm("Supprimer cette filière ?")) {
+            filieres = filieres.filter(f => f.id !== id);
+            saveAll();
+            addActivity("Suppression d'une filière");
+        }
+    }
+
+    let activities = [];
+    function addActivity(msg) {
+        activities.unshift({ text: msg, date: new Date().toLocaleString() });
+        if (activities.length > 5) activities.pop();
+        const container = document.getElementById('recentActivity');
+        if (activities.length === 0) container.innerHTML = '<p>Aucune activité récente.</p>';
+        else container.innerHTML = activities.map(a => `<div class="pb-2 border-b border-gray-100"><p class="text-sm">${escapeHtml(a.text)}</p><span class="text-xs text-slate-400">${a.date}</span></div>`).join('');
+    }
+
+    function generateFullReport() {
+        alert(`Rapport généré (simulation) :\nÉtudiants : ${etudiants.length}\nEnseignants : ${enseignants.length}\nFilières : ${filieres.length}\nConsultez la console pour plus de détails.`);
+        console.table({ etudiants, enseignants, filieres });
+        addActivity("Génération d'un rapport complet");
+    }
+    function exportData() {
+        const data = { etudiants, enseignants, filieres, exportDate: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `export_admin_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        addActivity("Export des données");
+    }
+
+    const sections = ['dashboard', 'users', 'filieres', 'reports', 'profile'];
+    const titles = { dashboard: 'Supervision', users: 'Utilisateurs', filieres: 'Filières', reports: 'Rapports', profile: 'Mon Établissement' };
+    function navigateTo(target) {
+        sections.forEach(s => document.getElementById(`section-${s}`).classList.add('hidden'));
+        document.getElementById(`section-${target}`).classList.remove('hidden');
+        document.getElementById('page-title').innerText = titles[target] || 'Administration';
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            const nav = btn.getAttribute('data-nav');
+            if (nav === target) btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all";
+            else btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-gray-50 transition-all";
+        });
+        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+            const nav = btn.getAttribute('data-nav');
+            if (nav === target) {
+                btn.classList.add('mobile-nav-active');
+                btn.classList.remove('text-slate-400');
+            } else {
+                btn.classList.remove('mobile-nav-active');
+                btn.classList.add('text-slate-400');
+            }
+        });
+        if (target === 'dashboard') refreshUI();
+        if (target === 'users') refreshUI();
+        if (target === 'filieres') refreshUI();
+        if (target === 'reports') refreshUI();
+    }
+
+    function toggleUserMenu() { document.getElementById('userMenu').classList.toggle('hidden'); }
+    function closeUserMenu() { document.getElementById('userMenu').classList.add('hidden'); }
+    document.addEventListener('click', (e) => { if (!document.getElementById('user-avatar-wrapper')?.contains(e.target)) closeUserMenu(); });
+
+    function openLogoutModal() {
+        const modal = document.getElementById('logoutModal'), card = document.getElementById('logoutCard');
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        requestAnimationFrame(() => requestAnimationFrame(() => { card.classList.remove('opacity-0', 'scale-90'); card.classList.add('opacity-100', 'scale-100'); }));
+    }
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutModal'), card = document.getElementById('logoutCard');
+        card.classList.remove('opacity-100', 'scale-100'); card.classList.add('opacity-0', 'scale-90');
+        setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+    }
+    function confirmLogout() {
+        localStorage.removeItem('userRole');
+        window.location.href = 'indexconnexion.html';
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    loadData();
+    refreshUI();
+    addActivity("Session administrateur démarrée");
+    navigateTo('dashboard');
+
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => { const t = btn.getAttribute('data-nav'); if (t) navigateTo(t); }));
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => { if (btn.getAttribute('data-nav')) btn.addEventListener('click', () => navigateTo(btn.getAttribute('data-nav'))); });
+    document.getElementById('saveUserBtn').addEventListener('click', saveUser);
+    document.getElementById('saveFiliereBtn').addEventListener('click', saveFiliere);
+</script>
 </body>
 </html>
